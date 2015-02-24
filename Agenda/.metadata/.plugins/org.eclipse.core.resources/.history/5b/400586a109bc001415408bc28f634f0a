@@ -1,0 +1,14 @@
+import java.util.GregorianCalendar;
+
+
+public class Date {
+	
+	public GregorianCalendar calendar;
+	
+	public Date(){
+		clendar =  = new java.util.GregorianCalendar();
+	}
+	
+	
+
+}

@@ -1,0 +1,57 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import org.omg.CORBA.portable.InputStream;
+
+
+public class Main {
+	
+	public static void main(String[] args) throws IOException{
+		Date t = new Date();
+		String host = "http://www.tom2ade.univ-montp2.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=2471,3161,3213,3216,3299&projectId=12&calType=ical&firstDate="+t.getDateDeb()+"&lastDate="+t.getDateFin();
+		
+		URL url;
+		try {
+			url = new URL(host);
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("162.38.218.204", 3128));
+			URLConnection conn = new URL(host).openConnection(proxy);
+			
+			java.io.InputStream input = conn.getInputStream();
+			String fileName = url.getFile().substring(url.getFile().lastIndexOf('/') + 1);
+			FileOutputStream writeFile = new FileOutputStream(fileName);
+			
+			try{
+				FileInputStream ips=new FileInputStream(fileName); 
+				InputStreamReader ipsr=new InputStreamReader(ips);
+				BufferedReader br=new BufferedReader(ipsr);
+				String ligne;
+				while ((ligne=br.readLine())!=null){
+					System.out.println(ligne);
+					chaine+=ligne+"\n";
+				}
+				br.close(); 
+			}		
+			catch (Exception e){
+				System.out.println(e.toString());
+			}
+			
+			
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+}

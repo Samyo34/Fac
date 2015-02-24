@@ -1,0 +1,32 @@
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+//http://www.tom2ade.univ-montp2.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=2471,3161,3213,3216,3299&projectId=12&calType=ical&firstDate=2015-02-23&lastDate=2015-03-01
+public class Date {
+	
+	public GregorianCalendar calendar;
+	
+	public Date(){
+		calendar  = new java.util.GregorianCalendar();
+	}
+	
+	/*
+	 * Retourne une String au format de l'addresse http donnant la date de début de la semaine actuel
+	 */
+	public String getDateDeb(){
+		calendar.getTime();
+		String year = Integer.toString((calendar.get(Calendar.YEAR)));
+		String month = Integer.toString((calendar.get(Calendar.MONTH)+1));
+		String day = Integer.toString((calendar.get(Calendar.DAY_OF_WEEK)));
+		if(month.length()<2){
+			
+		}
+		
+		
+		System.out.println(year+"-"+month+"-"+day);
+		return "";
+	}
+	
+	
+
+}

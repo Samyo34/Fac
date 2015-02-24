@@ -1,0 +1,26 @@
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+
+public class Main {
+	
+	public static void main(String[] args) throws IOException{
+		Date t = new Date();
+		String host = "http://www.tom2ade.univ-montp2.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=2471,3161,3213,3216,3299&projectId=12&calType=ical&firstDate="+t.getDateDeb()+"&lastDate="+t.getDateFin();
+		
+		URL url;
+		try {
+			url = new URL(host);
+			URLConnection connection = url.openConnection();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+}
