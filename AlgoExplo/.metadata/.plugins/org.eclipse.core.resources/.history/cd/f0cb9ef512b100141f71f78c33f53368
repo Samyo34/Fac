@@ -1,0 +1,11 @@
+import java.util.ArrayList;
+
+
+public class Clause {
+
+		ArrayList<Atome> disjonction;
+		
+		public Clause(){
+			this.disjonction = new ArrayList<Atome>();
+		}
+}

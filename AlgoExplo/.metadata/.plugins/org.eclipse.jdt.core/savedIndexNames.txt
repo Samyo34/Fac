@@ -1,0 +1,3 @@
+INDEX VERSION 1.127+/auto_home/sbricas/Bureau/Fac/AlgoExplo/.metadata/.plugins/org.eclipse.jdt.core
+847977268.index
+2662492129.index

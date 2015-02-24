@@ -1,0 +1,12 @@
+
+public class Atome {
+	int valeur;
+	
+	public Atome(){
+		valeur = 0;
+	}
+	
+	public Atome(int valeur){
+		this.valeur = valeur;
+	}
+}

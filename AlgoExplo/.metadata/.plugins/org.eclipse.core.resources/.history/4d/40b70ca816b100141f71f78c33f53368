@@ -1,0 +1,15 @@
+import java.util.ArrayList;
+
+
+public class CNF {
+	
+	ArrayList<Clause> conjonction;
+	
+	public CNF(){
+		conjonction = new ArrayList<Clause>();
+	}
+	
+	public CNF(ArrayList<Clause> conj){
+		this.conjonction = conj;
+	}
+}
