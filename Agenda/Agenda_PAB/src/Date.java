@@ -66,7 +66,7 @@ public class Date {
 	 * Retourne une String au format de l'addresse http donnant la date de fin de la semaine actuel
 	 */
 	public String getDateFin(){
-		java.util.Date d= calendar.getTime();
+		/*java.util.Date d= calendar.getTime();
 		
 		Locale locale = Locale.getDefault();
 		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, locale);
@@ -92,7 +92,11 @@ public class Date {
 			case "lundi":
 				calendar.add(Calendar.DATE, 6);
 				break;
-		}
+			case "dimanche":
+				calendar
+		}*/
+		
+		calendar.add(Calendar.DATE,this.getDateDeb()+6);
 				
 			
 		
