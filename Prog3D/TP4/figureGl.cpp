@@ -39,6 +39,69 @@ Point** cone(Point* a, Point* b, long rayon, long hauteur, int nbMeridien){
 	return cone;
 }
 
+
+Point*** sphere(Point* centre, long rayon, int nbMeridien, int nbPara){
+	Point*** pts = new Point**[nbMeridien];
+	Point* nord = new Point(0,0,rayon);
+	Point* sud = new Point(0,0,-rayon);
+	double x,y,z;
+
+	double angleMeri, anglePara;
+	for(int i =0;i<nbMeridien;i++){
+		angleMeri=2*M_PI*i/nbMeridien;
+		pts[i]=new Point*[nbPara];
+		//pts[i][0]=nord;
+		for(int j=0;j<nbPara;j++){
+			anglePara = 2*M_PI*j/nbPara;
+			x = rayon*sin(anglePara)*cos(angleMeri);
+			y = rayon* sin(anglePara)*sin(angleMeri);
+			z = rayon * cos(anglePara);
+			pts[i][j]=new Point(x,y,z);
+		}
+		//pts[i][nbPara+1]=sud;
+	}
+	return pts;
+}
+
+void drawSphere(Point*** pts,int nbMeridien,int nbPara){
+	glColor3f(1, 0, 0);
+	glLineWidth(2);
+	glPointSize(5);
+    glBegin(GL_TRIANGLE_STRIP);
+	for(int i=0;i<nbMeridien-1;i++){
+		for(int j=0;j<nbPara;j++){
+
+
+			glVertex3f(
+				pts[i][j]->getX(),
+				pts[i][j]->getY(),
+				pts[i][j]->getZ());
+			glVertex3f(
+				pts[i+1][j]->getX(),
+				pts[i+1][j]->getY(),
+				pts[i+1][j]->getZ());
+		}
+	}
+	glEnd();
+	glColor3f(0,0,1);
+	glBegin(GL_POINTS);
+	for(int i=0;i<nbMeridien-1;i++){
+		for(int j=0;j<nbPara;j++){
+
+
+			glVertex3f(
+				pts[i][j]->getX(),
+				pts[i][j]->getY(),
+				pts[i][j]->getZ());
+			glVertex3f(
+				pts[i+1][j]->getX(),
+				pts[i+1][j]->getY(),
+				pts[i+1][j]->getZ());
+		}
+	}
+	glEnd();
+}
+
 void drawCone(Point** pts, long nbPoints){
 	Point** temp = new Point*[nbPoints/2];
 	int cpt=0;

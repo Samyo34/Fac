@@ -38,8 +38,8 @@ Si vous mettez glut dans le répertoire courant, on aura alors #include "glut.h"
 
 // Touche echap (Esc) permet de sortir du programme
 #define KEY_ESC 27
-#define KEY_PLUS 43
-#define KEY_MOINS 45
+#define KEY_PLUS 112
+#define KEY_MOINS 109
 
 GLint winWidth=600, winHeight=600;
 GLfloat eyeX=0.0, eyeY=0.0, eyeZ=2.0;
@@ -186,10 +186,12 @@ void render_scene()
 
   Point* p1=new Point(0,0,0);
   Point* p2=new Point(0,2,0);
-  Point** pts=cone(p1,p2,10,20,10);
+  Point*** pts = sphere(p1,20,nbMeri,nbPara);
+  drawSphere(pts,8,8);
+  //Point** pts=cone(p1,p2,10,20,10);
   //Point** pts=cylindre(p1,p2,10,20,10);
   //drawCylindre(pts,10*2);
-  drawCone(pts,10*2);
+  //drawCone(pts,10*2);
 
 
 

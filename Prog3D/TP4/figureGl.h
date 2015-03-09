@@ -13,3 +13,7 @@ void drawCylindre(Point** pts, long nbPoints);
 Point** cone(Point* a, Point* b, long rayon, long hauteur, int nbMeridien);
 
 void drawCone(Point** pts, long nbPoints);
+
+Point*** sphere(Point* centre, long rayon, int nbMeridien, int nbPara);
+
+void drawSphere(Point*** pts,int nbMeridien,int nbPara);
