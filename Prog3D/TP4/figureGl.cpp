@@ -67,7 +67,7 @@ void drawSphere(Point*** pts,int nbMeridien,int nbPara){
 	glColor3f(1, 0, 0);
 	glLineWidth(2);
 	glPointSize(5);
-    glBegin(GL_TRIANGLE_STRIP);
+    glBegin(GL_POLYGON);
 	for(int i=0;i<nbMeridien-1;i++){
 		for(int j=0;j<nbPara;j++){
 

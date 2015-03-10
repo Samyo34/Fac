@@ -187,7 +187,7 @@ void render_scene()
   Point* p1=new Point(0,0,0);
   Point* p2=new Point(0,2,0);
   Point*** pts = sphere(p1,20,nbMeri,nbPara);
-  drawSphere(pts,8,8);
+  drawSphere(pts,nbMeri,nbPara);
   //Point** pts=cone(p1,p2,10,20,10);
   //Point** pts=cylindre(p1,p2,10,20,10);
   //drawCylindre(pts,10*2);
