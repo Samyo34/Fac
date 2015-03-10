@@ -69,9 +69,9 @@ void drawSphere(Point*** pts,int nbMeridien,int nbPara){
 	glPointSize(5);
     glBegin(GL_POLYGON);
 	for(int i=0;i<nbMeridien-1;i++){
-		for(int j=0;j<nbPara;j++){
+		for(int j=0;j<nbPara-1;j++){
 
-
+			glBegin(GL_LINES);
 			glVertex3f(
 				pts[i][j]->getX(),
 				pts[i][j]->getY(),
@@ -80,9 +80,20 @@ void drawSphere(Point*** pts,int nbMeridien,int nbPara){
 				pts[i+1][j]->getX(),
 				pts[i+1][j]->getY(),
 				pts[i+1][j]->getZ());
+			glEnd();
+
+			glBegin(GL_LINES);
+			glVertex3f(pts[i+1][j]->getX(), pts[i+1][j]->getY(), pts[i+1][j]->getZ());
+			glVertex3f(pts[i+1][j+1]->getX(), pts[i+1][j+1]->getY(), pts[i+1][j+1]->getZ());
+			glEnd();
 		}
 	}
+
+	glBegin(GL_LINES);
+	glVertex3f(pts[0][1]->getX(), pts[0][1]->getY(), pts[0][1]->getZ());
+	glVertex3f(pts[nbMeridien - 1][1]->getX(), pts[nbMeridien-1][1]->getY(), pts[nbMeridien-1][1]->getZ());
 	glEnd();
+
 	glColor3f(0,0,1);
 	glBegin(GL_POINTS);
 	for(int i=0;i<nbMeridien-1;i++){
