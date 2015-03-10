@@ -47,7 +47,7 @@ public class Main {
 					if(spl[0].equals("SUMMARY")){
 						ligne = "SUMMARY:"+dico.get(spl[1]);
 					}
-					fichier.write(ligne+"\n");
+					fichier.write(ligne+"\r");
 				}
 				br.close(); 
 				fichier.close();

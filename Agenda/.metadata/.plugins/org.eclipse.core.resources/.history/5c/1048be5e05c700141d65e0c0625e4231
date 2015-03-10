@@ -16,11 +16,11 @@ public class Main {
 	static HashMap<String, String>dico = new HashMap<String,String>();
 	
 	public static void main(String[] args) throws IOException{
-		dico.put("FMIN215","Algorithmique Géométrique - FMIN215");
-		dico.put("GMIN20A","Algorithmique d'exploration et de mouvement - GMIN20A");
-		dico.put("GMIN212","Modélisation et programmation - GMIN212");
-		dico.put("GMIN215","Analyse et traitement d'images - GMIN215");
-		dico.put("GMIN21C","Conduite de projets - GMIN21C");
+		dico.put("FMIN215","Algorithmique Géométrique");
+		dico.put("GMIN20A","Algorithmique d'exploration et de mouvement");
+		dico.put("GMIN212","Modélisation et programmation");
+		dico.put("GMIN215","Analyse et traitement d'images");
+		dico.put("GMIN21C","Conduite de projets");
 		
 		
 		Date t = new Date();
@@ -47,7 +47,7 @@ public class Main {
 					if(spl[0].equals("SUMMARY")){
 						ligne = "SUMMARY:"+dico.get(spl[1]);
 					}
-					fichier.write(ligne+"\n");
+					fichier.write(ligne+"\r");
 				}
 				br.close(); 
 				fichier.close();

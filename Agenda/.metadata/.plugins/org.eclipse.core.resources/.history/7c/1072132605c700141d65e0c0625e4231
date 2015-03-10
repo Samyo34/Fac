@@ -96,6 +96,7 @@ public class Date {
 				calendar.add(Calendar.DATE, 7);
 		}
 		
+		calendar.add(Calendar.DATE,this.getDateDeb()+6);
 				
 			
 		
