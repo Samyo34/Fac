@@ -60,3 +60,8 @@ void displayVoxel(Point* centre, long length){
 	glEnd();
 }
 
+
+void displaySphereVolumic(Point* centre,double rayon, double resolution){
+	
+}
+
