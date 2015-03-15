@@ -8,6 +8,12 @@
 #include "../TP4/oGl3.h"
 #include "../TP4/figureGl.h"
 
-void displayVoxel(Point* centre, long length);
+void displayVoxel(Point* centre, double length);
 
-void displaySphereVolumic(Point* centre,double rayon, double resolution)
+void displaySphereVolumic(Point* centre,double rayon, double resolution);
+
+bool intersect(Point* point, Point* centre, double rayon, int nbPoints);
+
+int voxelIntersect(Voxel* v, Point* centre, double rayon);
+
+void octree(Voxel* v, Point* centre, double rayon, double resolution);

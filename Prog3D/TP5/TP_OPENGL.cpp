@@ -108,7 +108,7 @@ GLvoid window_reshape(GLsizei width, GLsizei height)
   // ici, vous verrez pendant le cours sur les projections qu'en modifiant les valeurs, il est
   // possible de changer la taille de l'objet dans la fenêtre. Augmentez ces valeurs si l'objet est
   // de trop grosse taille par rapport à la fenêtre.
-  glOrtho(-25.0, 25.0, -25.0, 25.0, -25.0, 25.0);
+  glOrtho(-30.0, 30.0, -30.0, 30.0, -30.0, 30.0);
 
   // toutes les transformations suivantes s´appliquent au modèle de vue
   glMatrixMode(GL_MODELVIEW);
@@ -175,8 +175,8 @@ void render_scene()
 {
 
   Point* p1 = new Point(0,0,0);
-  displayVoxel(p1,4);
-  //Voxel* l = new Voxel();
+  //displayVoxel(p1,4);
+  //Voxel* l = new Voxel(p1,20);
 
   // Initialisation
   glColor3f(0,0,0);
@@ -190,6 +190,8 @@ void render_scene()
   glEnd();
 
 
+  displaySphereVolumic(p1,15,2);
+  
  /* Point* p1=new Point(0,0,0);
   Point* p2=new Point(0,2,0);
   Point*** pts = sphere(p1,20,nbMeri,nbPara);

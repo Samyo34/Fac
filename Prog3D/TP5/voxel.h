@@ -17,12 +17,19 @@ private:
 	double length;
 	 
 	Voxel** sousVox;
+	long size;
 public:
 	//Voxel(Point* p1,Point* p2, Point* p3, Point* p4, Point* p5, Point* p6, Point* p7);
 	Voxel(Point* centre, double length);
 	void setSousVoxel(Voxel** voxs, long nbVox);
 	Voxel** getSousVoxel();
+	void decouper();
 	Point** getCube();
+	Point* getCentre();
+	double getLength();
+	long getSize();
+	Point** getAngles();
+	Point** getSousSommet();
 };
 #endif
 
