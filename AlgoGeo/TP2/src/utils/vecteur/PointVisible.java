@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Comparator;
 
 import utils.couleurs.Couleur;
@@ -66,6 +67,27 @@ public class PointVisible extends Rectangle implements Comparator<PointVisible>{
 	public String getLabel() {
 		return label;
 	}
-
+	
+	public boolean anglePolaireInferieur(PointVisible p0, PointVisible p1){
+		//TODO : VOIR TD1 EXO1 (angle polaire, determinant...)
+		double x1 = p1.getX()-p0.getX();
+		double y1 = p1.getY()-p0.getY();
+		double x2 = this.getX()-p0.getY();
+		double y2 = this.getY()-p0.getY();
+		return (x2*y1-x1-y2)>0;
+	}
+	
+	public PointVisible getPlusADroite(ArrayList<PointVisible> points, PointVisible point){
+		PointVisible res;
+		PointVisible temp = point;
+		for(int i =0; i < points.size()-1;i++){
+			res = points.get(i);
+			if(temp.anglePolaireInferieur(this, temp)){
+				temp =res;
+			}
+			
+		}
+		return temp;
+	}
 }
 

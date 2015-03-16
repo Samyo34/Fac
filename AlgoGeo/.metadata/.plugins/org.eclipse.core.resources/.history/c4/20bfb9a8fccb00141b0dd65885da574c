@@ -1,0 +1,89 @@
+package utils.vecteur;
+
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+import utils.couleurs.Couleur;
+
+
+public class PointVisible extends Rectangle implements Comparator<PointVisible>{
+	public static int midWidth = 5;
+	Color color = Couleur.nw;
+	Role role ;
+	private String label;
+	Vecteur segment;
+	
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public PointVisible(int x, int y, Role r) {
+		super(x,y, 2 * PointVisible.midWidth,2 * PointVisible.midWidth);
+		this.role = r;
+		switch(role){
+		case begin: 
+			color = Couleur.beginPoint;
+			break;
+		case intersect: // blanc
+			color = Couleur.intersection;
+			break;
+		case end: //rouge
+			color = Couleur.endPoint;
+			break;
+		default:
+			color = Couleur.fg;
+	}
+	}
+
+	public PointVisible(int xp, int yp) {
+		this(xp, yp, Role.undefined);
+	}
+
+	public void dessine(Graphics2D g2d) {
+		g2d.setColor(color);
+		g2d.fill(this);	
+		drawLabel(g2d);
+	}
+
+	@Override
+	public int compare(PointVisible p1, PointVisible p2) {
+		return p2.x - p1.x;
+	}	
+
+	public void print() {
+		System.out.println("x = " + x + " y = " + y+" w = " + width + " h = " + height + " role = "+role);
+	}
+
+	public void drawLabel(Graphics2D g) {
+		FontMetrics fm = g.getFontMetrics();
+		int centeredText = (int) (x - fm.stringWidth(getLabel())/2 + fm.stringWidth("_"));
+		g.drawString(getLabel(), centeredText, (int) (y-2));
+	}
+
+	public String getLabel() {
+		return label;
+	}
+	
+	public boolean anglePolaireInferieur(PointVisible p0, PointVisible p1){
+		//TODO : VOIR TD1 EXO1 (angle polaire, determinant...)
+		double x1 = p1.getX()-p0.getX();
+		double y1 = p1.getY()-p0.getY();
+		double x2 = this.getX()-p0.getY();
+		double y2 = this.getY()-p0.getY();
+		return (x2*y1-x1-y2)>0;
+	}
+	
+	public PointVisible getPlusADroite(ArrayList<PointVisible> points, PointVisible point){
+		PointVisible temp;
+		for(int i =0; i < points.size()-1;i++){
+			temp = points.get(i);
+			if()
+			
+		}
+	}
+}
+

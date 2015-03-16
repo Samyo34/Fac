@@ -66,10 +66,7 @@ public class Vue extends JPanel implements MouseWheelListener, MouseListener, Ac
 	}
 	
 	
-	public boolean anglePolaireInferieur(PointVisible p0, PointVisible p1){
-		//TODO : VOIR TD1 EXO1 (angle polaire, determinant...)
-		return false;
-	}
+
 				
 	// m�thode utilitaire 
 	// retourne un entier compris entre xmin et xmax
@@ -77,7 +74,52 @@ public class Vue extends JPanel implements MouseWheelListener, MouseListener, Ac
 		double dr = Math.random() * (double) (xmax - xmin) + (double) xmin;
 		return (int) dr;
 	}
+	
+	public ArrayList<PointVisible> graham(ArrayList<PointVisible> points){
+		//TODO : terminer algo (voir page 2 du document avec les TPs)
+		ArrayList<PointVisible> list = new ArrayList<PointVisible>();
+		PointVisible pMin = getMin(points);
 		
+		
+		
+		return list;
+	}
+	
+	
+	public ArrayList<PointVisible> jarvis(ArrayList<PointVisible> points){
+		ArrayList<PointVisible> envConv =  new ArrayList<PointVisible>();
+		PointVisible pMin = getMin(points);
+		PointVisible pCourant = pMin;
+		PointVisible pTest = null, pSuivant;
+		envConv.add(pCourant);
+		do{
+			for(PointVisible p : points){
+				if(!(p.getLabel().equals(pCourant.getLabel()))){
+					pTest = p;
+					break;
+				}
+			}
+			pSuivant = pCourant.getPlusADroite(points, pTest);
+			envConv.add(pSuivant);
+			
+		}while(!(pCourant.getLabel().equals(pMin.getLabel())));
+		return envConv;
+	}
+	
+	public PointVisible getMin(ArrayList<PointVisible> points){
+		PointVisible min = points.get(0);
+		for(PointVisible p : points){
+			if(p.getX()<min.getX()){
+				min = p;
+			}else if(p.getX()==min.getX()){
+				if(p.getY()>min.getY()){
+					min = p;
+				}
+			}
+		}
+		return min;
+		
+	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
