@@ -56,6 +56,7 @@ public class Main {
 				System.out.println(e.toString());
 			}
 			
+			System.out.println("fin");
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

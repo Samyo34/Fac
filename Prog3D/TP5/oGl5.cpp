@@ -26,7 +26,7 @@ void displayVoxel(Point* centre, double length){
 	Point* p8 = new Point(centre->getX()-(length),centre->getY()-(length),centre->getZ()-length);
 
 	glPointSize(5);
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINE_STRIP);
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
@@ -34,7 +34,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glEnd();
 
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINE_STRIP);
 	glVertex3f(p5->getX(),p5->getY(),p5->getZ());
 	glVertex3f(p6->getX(),p6->getY(),p6->getZ());
 	glVertex3f(p7->getX(),p7->getY(),p7->getZ());
@@ -42,7 +42,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p5->getX(),p5->getY(),p5->getZ());
 	glEnd();
 
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINE_STRIP);
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glVertex3f(p6->getX(),p6->getY(),p6->getZ());
@@ -50,7 +50,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glEnd();
 
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINE_STRIP);
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
 	glVertex3f(p4->getX(),p4->getY(),p4->getZ());
 	glVertex3f(p8->getX(),p8->getY(),p8->getZ());
@@ -58,7 +58,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
 	glEnd();
 
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINE_STRIP);
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glVertex3f(p4->getX(),p4->getY(),p4->getZ());
 	glVertex3f(p8->getX(),p8->getY(),p8->getZ());
@@ -66,7 +66,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glEnd();
 
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINE_STRIP);
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
 	glVertex3f(p7->getX(),p7->getY(),p7->getZ());
@@ -80,7 +80,7 @@ bool intersect(Point* point, Point* centre, double rayon){
 	double y = centre->getY()-point->getY();
 	double z = centre->getZ()-point->getZ();
 	Vector v(x,y,z);
-	cout<<v.norme()<<" | "<<fabs(x)<<":"<<fabs(y)<<":"<<fabs(z)<<" | "<<rayon<<endl;
+	//cout<<v.norme()<<" | "<<fabs(x)<<":"<<fabs(y)<<":"<<fabs(z)<<" | "<<rayon<<endl;
 	if(v.norme()<rayon){
 		return true;
 	}else{
@@ -88,7 +88,9 @@ bool intersect(Point* point, Point* centre, double rayon){
 	}
 }
 
-
+/*
+ * Retourne le nombre sommet qui intersect la sphere 
+ */
 int voxelIntersect(Voxel* v, Point* centre, double rayon){
 	Point** pts = v->getAngles();
 	int cpt=0;
@@ -105,33 +107,19 @@ int voxelIntersect(Voxel* v, Point* centre, double rayon){
 void octree(Voxel* v, Point* centre, double rayon, double resolution){
 	Voxel** ssVox;
 	//cout<<v->getCentre()->getX()<<":"<<v->getCentre()->getY()<<":"<<v->getCentre()->getZ()<<endl;
+	v->decouper();
+	ssVox = v->getSousVoxel();
 	int res = voxelIntersect(v,centre,rayon);
-	if(res>=2){
+	cout<<res<<endl;
+	if(res > 0 && res < 8)/* && !intersect(centre, centre,rayon)*/{
 		if(v->getLength() <= resolution){
-			displayVoxel(v->getCentre(),v->getLength());
-		}else{
-			v->decouper();
-			ssVox = v->getSousVoxel();
 			for(int i=0;i < (v->getSize());i++){
 				octree(ssVox[i],centre,rayon,resolution);
 			}
 		}
+	}else if (res == 8){
+		displayVoxel(v->getCentre(),v->getLength());
 	}
-
-
-	/*if(!(res == 8)){
-		if(v->getLength()>resolution){
-			v->decouper();
-			ssVox = v->getSousVoxel();
-			for(int i=0;i < (v->getSize());i++){
-				octree(ssVox[i],centre,rayon,resolution);
-			}
-		}
-		
-	}else{
-		displayVoxel(v->getCentre(),v->getLength()/2);
-	}*/
-
 }
 
 
@@ -143,15 +131,15 @@ void displaySphereVolumic(Point* centre,double rayon, double resolution){
 	v->decouper();
 	Voxel** ssV = v->getSousVoxel();
 	//displayVoxel(v->getCentre(),rayon);
-	
-	octree(v,centre,rayon,resolution);
-
-	/*for(int i =0; i<v->getSize();i++){
-		//cout<<i<<" "<<ssV[i]->getCentre()->getX()<<":"<<ssV[i]->getCentre()->getY()<<":"<<ssV[i]->getCentre()->getZ()<<endl;
+	for(int i =0;i<v->getSize();i++){
 		octree(ssV[i],centre,rayon,resolution);
-		//displayVoxel(ssV[i]->getCentre(),ssV[i]->getLength());
-	}*/
-	//octree(v,centre,rayon,resolution);
-	
+	}
 }
 
+bool intersectCil(Point* p, Point* axisOrigin, Vector* axisOrigin, double rayon){
+	// TODO : calculer si p appartient au cylindre
+}
+
+void displayCilyndreVolumic(Point* axisOrigin, Vector* axisVector, double rayon, double resolution){
+	Voxel* v = new Voxel(axisOrigin, axisVector.norme());
+}
