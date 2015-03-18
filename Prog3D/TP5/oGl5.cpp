@@ -26,7 +26,7 @@ void displayVoxel(Point* centre, double length){
 	Point* p8 = new Point(centre->getX()-(length),centre->getY()-(length),centre->getZ()-length);
 
 	glPointSize(5);
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
@@ -34,7 +34,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p5->getX(),p5->getY(),p5->getZ());
 	glVertex3f(p6->getX(),p6->getY(),p6->getZ());
 	glVertex3f(p7->getX(),p7->getY(),p7->getZ());
@@ -42,7 +42,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p5->getX(),p5->getY(),p5->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glVertex3f(p6->getX(),p6->getY(),p6->getZ());
@@ -50,7 +50,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
 	glVertex3f(p4->getX(),p4->getY(),p4->getZ());
 	glVertex3f(p8->getX(),p8->getY(),p8->getZ());
@@ -58,7 +58,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glVertex3f(p4->getX(),p4->getY(),p4->getZ());
 	glVertex3f(p8->getX(),p8->getY(),p8->getZ());
@@ -66,7 +66,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
 	glVertex3f(p7->getX(),p7->getY(),p7->getZ());
@@ -112,10 +112,12 @@ void octree(Voxel* v, Point* centre, double rayon, double resolution){
 	int res = voxelIntersect(v,centre,rayon);
 	cout<<res<<endl;
 	if(res > 0 && res < 8)/* && !intersect(centre, centre,rayon)*/{
-		if(v->getLength() <= resolution){
+		if(v->getLength() >= resolution){
 			for(int i=0;i < (v->getSize());i++){
 				octree(ssVox[i],centre,rayon,resolution);
 			}
+		}else{
+			displayVoxel(v->getCentre(),v->getLength());
 		}
 	}else if (res == 8){
 		displayVoxel(v->getCentre(),v->getLength());
@@ -136,10 +138,64 @@ void displaySphereVolumic(Point* centre,double rayon, double resolution){
 	}
 }
 
-bool intersectCil(Point* p, Point* axisOrigin, Vector* axisOrigin, double rayon){
+bool intersectCil(Point* p, Point* axisOrigin, Vector* axisVector, double rayon){
 	// TODO : calculer si p appartient au cylindre
+	Vector v(axisOrigin->getX()-p->getX(),axisOrigin->getY()-p->getY(),axisOrigin->getZ()-p->getZ());
+	Vector prodVec(v.getX()*axisVector->getZ()-v.getZ()*axisVector->getY(),
+					v.getZ()*axisVector->getX()-v.getX()*axisVector->getZ(),
+					v.getX()*axisVector->getY()-v.getY()*axisOrigin->getX());
+	double distance = prodVec.norme()/axisVector->norme();
+	//cout<<distance<<endl;
+	if(distance < rayon){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+int voxelIntersectCil(Voxel* v, Point* axisOrigin, Vector* axisVector, double rayon){
+	Point** pts = v->getAngles();
+	int res =0;
+	for(int i =0; i<8;i++){
+		if(intersectCil(pts[i],axisOrigin,axisVector,rayon)){
+			res++;
+		}
+	}
+	return res;
+}
+
+void octreeCil(Voxel* v, Point* axisOrigin, Vector* axisVector, double rayon, double resolution){
+	Voxel** ssVox;
+	//cout<<v->getCentre()->getX()<<":"<<v->getCentre()->getY()<<":"<<v->getCentre()->getZ()<<endl;
+	v->decouper();
+	ssVox = v->getSousVoxel();
+	int res = voxelIntersectCil(v,axisOrigin,axisVector,rayon);
+	//cout<<res<<endl;
+
+	if(res > 0 && res < 8){
+		if(v->getLength() >= resolution){
+			for(int i=0;i < (v->getSize());i++){
+				octreeCil(ssVox[i],axisOrigin,axisVector,rayon,resolution);
+			}
+		}else{
+			displayVoxel(v->getCentre(),v->getLength());
+		}
+	}else if (res == 8){
+		displayVoxel(v->getCentre(),v->getLength());
+	}
 }
 
 void displayCilyndreVolumic(Point* axisOrigin, Vector* axisVector, double rayon, double resolution){
-	Voxel* v = new Voxel(axisOrigin, axisVector.norme());
+	Voxel* v;
+	if(rayon > axisVector->norme()){
+		v = new Voxel(axisOrigin, rayon);
+	}else{
+		v = new Voxel(axisOrigin, axisVector->norme());
+	}
+	//displayVoxel(v->getCentre(),v->getLength());
+	v->decouper();
+	Voxel** ssVox = v->getSousVoxel();
+	for(int i =0;i<8;i++){
+		octreeCil(ssVox[i],axisOrigin,axisVector,rayon,resolution);
+	}
 }

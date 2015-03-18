@@ -7,11 +7,11 @@
 using namespace std;
 int X = 256; // ligne
 int Y = 256; // colonne
-int Z = 100; // image
+int Z = 128; // image
 
-float sizeX;
-float sizeY;
-float sizeZ;
+float sizeX=5;
+float sizeY=5;
+float sizeZ=5;
 
 struct resultat{
 	bool isOne; // vrai si il y en au moins 1;
@@ -45,7 +45,7 @@ void setValue(int*** data, int x, int y, int z, int value){
 }
 
 /*
- * Retourne vrai si aun des voisins du Voxel (x,y,z) a une
+ * Retourne vrai si un des voisins du Voxel (x,y,z) a une
  * valeur inferieur au seuil (les vrai voxels : taille + position)
  */
 resultat isVoisInf(int*** data,int x, int y, int z , int seuil){
@@ -81,26 +81,310 @@ resultat isVoisInf(int*** data,int x, int y, int z , int seuil){
 	}
 }
 
-int*** getTriangle(int*** data, int x, int y, int z, int pos){
-	// TODO :  recuperer les deux triangles
+float*** getTriangle(int*** data, int x, int y, int z, int pos){
+	float*** triangles = new float**[2];
+	float val;
+	triangles[0]= new float*[9];
+	triangles[1]= new float*[9];
+	switch (pos){
+		case 0:
+		// premier triangle
+		val = (x*sizeX-sizeX/2);
+		triangles[0][0]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][1]=&val;
+		val =z*sizeZ+sizeZ/2;
+		triangles[0][2]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][3]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][4]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[0][5]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][6]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][7]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][8]=&val;
+
+		// seconde triangle
+		val = x*sizeX-sizeX/2;
+		triangles[1][0]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[1][1]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[1][2]=&val;
+		val = x*sizeX-sizeX/2;
+		triangles[1][3]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[1][4]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][5]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[1][6]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[1][7]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][8]=&val;
+		break;
+		case 1:
+		// premier triangle
+		val = x*sizeX-sizeX/2;
+		triangles[0][0]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[0][1]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][2]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][3]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[0][4]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[0][5]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][6]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[0][7]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][8]=&val;
+		// seconde triangle
+		val = x*sizeX-sizeX/2;
+		triangles[1][0]=&val;
+		val =y*sizeY-sizeY/2;
+		triangles[1][1]=&val;
+		val =z*sizeZ+sizeZ/2;
+		triangles[1][2]=&val;
+		val = x*sizeX-sizeX/2;
+		triangles[1][3]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][4]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][5]=&val;
+		val =x*sizeX+sizeX/2;
+		triangles[1][6]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][7]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][8]=&val;
+		break;
+		case 2:
+		// premier triangle
+		val = x*sizeX-sizeX/2;
+		triangles[0][0]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][1]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][2]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][3]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][4]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][5]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][6]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[0][7]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][8]=&val;
+		// seconde triangle
+		val = x*sizeX-sizeX/2;
+		triangles[1][0]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[1][1]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[1][2]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[1][3]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][4]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[1][5]=&val;
+		val = x*sizeX-sizeX/2;
+		triangles[1][6]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][7]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[1][8]=&val;
+		break;
+		case 3:
+		// premier triangle
+		val = x*sizeX-sizeX/2;
+		triangles[0][0]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][1]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[0][2]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][3]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][4]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[0][5]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][6]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[0][7]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[0][8]=&val;
+		// seconde triangle
+		val = x*sizeX-sizeX/2;
+		triangles[1][0]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][1]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][2]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[1][3]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[1][4]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][5]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[1][6]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][7]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][8]=&val;
+		break;
+		case 4:
+		// premier triangle
+		val = x*sizeX-sizeX/2;
+		triangles[0][0]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][1]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][2]=&val;
+		val = x*sizeX-sizeX/2;
+		triangles[0][3]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[0][4]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][5]=&val;
+		val = x*sizeX-sizeX/2;
+		triangles[0][6]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][7]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[0][8]=&val;
+		// seconde triangle
+		val =z*sizeZ-sizeZ/2;
+		triangles[1][0]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][1]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[1][2]=&val;
+		val = x*sizeX-sizeX/2;
+		triangles[1][3]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][4]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][5]=&val;
+		val = x*sizeX-sizeX/2;
+		triangles[1][6]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[1][7]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][8]=&val;
+		break;
+		case 5:
+		// premier triangle
+		val = x*sizeX+sizeX/2;
+		triangles[0][0]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][1]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][2]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][3]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[0][4]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[0][5]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[0][6]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[0][7]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[0][8]=&val;
+		// seconde triangle
+		val = x*sizeX+sizeX/2;
+		triangles[1][0]=&val;
+		val = y*sizeY+sizeY/2;
+		triangles[1][1]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][2]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[1][3]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][4]=&val;
+		val = z*sizeZ-sizeZ/2;
+		triangles[1][5]=&val;
+		val = x*sizeX+sizeX/2;
+		triangles[1][6]=&val;
+		val = y*sizeY-sizeY/2;
+		triangles[1][7]=&val;
+		val = z*sizeZ+sizeZ/2;
+		triangles[1][8]=&val;
+		break;
+
+	}
+	return triangles;
+
 }
 
- maillage(int*** data, int seuil){
+void maillage(int*** data, int seuil){
+ 	FILE* out = fopen("maillage.stl","w");
+ 	char stringW[150];
+ 	float*** triangles; 
+
+	sprintf(stringW, "%s \n",  "solid name" );
+	cout<<stringW<<endl;
+	fwrite(stringW, sizeof(stringW),1,out);
+	sprintf(stringW, "%s \n",  "facet nomrmal 0 0 0" );
+	cout<<stringW<<endl;
+	fwrite(stringW, sizeof(stringW),1,out);
 	for(int i =1;i<Z;i++){
 		for(int j =1;j<X;j++){
 			for(int k=1;k<Y;k++){
-				if(getValue(j,k,i)>seuil){
+				if(getValue(data,j,k,i)>seuil){
 					resultat res = isVoisInf(data, j,k,i,seuil);
-					if(resultat.isOne){
-						// TODO : voir ennoncé
+					if(res.isOne){
+						triangles = getTriangle(data,j,k,i,res.pos);
+						for(int l = 0;l<2;l++){
+							//cout<<*triangles[0][0]<<":"<<*triangles[0][1]<<":"<<*triangles[0][2]<<endl;
+							sprintf(stringW, "%s \n",  "outer loop");
+							fwrite(stringW, sizeof(stringW),1,out);
+							cout<<stringW<<endl;
+							sprintf(stringW, "%s %f %f %f \n",  "vertex ",*triangles[l][0],*triangles[l][1],*triangles[l][2] );
+							cout<<stringW<<endl;
+							fwrite(stringW, sizeof(stringW),1,out);
+							sprintf(stringW, "%s %lf %lf %lf \n",  "vertex ",*triangles[l][3],*triangles[l][4],*triangles[l][5] );
+							cout<<stringW<<endl;
+							fwrite(stringW, sizeof(stringW),1,out);
+							sprintf(stringW, "%s %lf %lf %lf \n",  "vertex ",*triangles[l][6],*triangles[l][7],*triangles[l][8] );
+							cout<<stringW<<endl;
+							fwrite(stringW, sizeof(stringW),1,out);
+							
+							sprintf(stringW, "%s \n",  "end loop" );
+							cout<<stringW<<endl;
+							fwrite(stringW, sizeof(stringW),1,out);
+						}
+												
 					}
 				}
 			}
 		}
 	}
+
+	sprintf(stringW, "%s \n %s \n",  "end facet","endsolid name");
+	cout<<stringW<<endl;
+	fwrite(stringW, sizeof(stringW),1,out);
+	fclose(out);
 }
 
-
+/*
 void seuil(int data***, int seuil){
 	for(int i =0; i<Z;i++){
 		for(int j=0;j<X;j++){
@@ -113,7 +397,7 @@ void seuil(int data***, int seuil){
 			}
 		}
 	}
-}
+}*/
 
 int main(int argc, char* argv[]){
 
@@ -132,6 +416,7 @@ int main(int argc, char* argv[]){
   	fseek (f , 0 , SEEK_END);
   	size = ftell (f);
   	rewind (f);
+
   	
   	unsigned short *buff = new unsigned short[size];
 
@@ -143,7 +428,6 @@ int main(int argc, char* argv[]){
     int min = val;
   	int *data = new int[nbLue];
   	data[0]= val;
-
   	for(int i =1;i<nbLue;i++){
   		oct1 = buff[i]%256;
   		oct2 = buff[i]/256;
@@ -158,7 +442,8 @@ int main(int argc, char* argv[]){
   	}
     int*** dt = to3DTab(data,nbLue);
     int p = getValue(dt,200,200,20);
-  	cout<<"Voxel max : "<<max<<", Voxel min : "<<min<<", Voxel en 200,200,20 : "<<p<<endl;
+  	//cout<<"Voxel max : "<<max<<", Voxel min : "<<min<<", Voxel en 200,200,20 : "<<p<<endl;
+  	maillage(dt, 200);
 
 
 }

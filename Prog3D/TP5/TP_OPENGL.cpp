@@ -177,6 +177,8 @@ void render_scene()
   Point* p1 = new Point(0,0,0);
   //displayVoxel(p1,4);
   //Voxel* l = new Voxel(p1,20);
+  Point* p2 = new Point(0,15,0);
+  Vector* axisVector = new Vector(p2->getX()-p1->getX(),p2->getY()-p1->getY(),p2->getZ()-p1->getZ());
 
   // Initialisation
   glColor3f(0,0,0);
@@ -190,7 +192,8 @@ void render_scene()
   glEnd();
 
 
-  displaySphereVolumic(p1,15,2);
+  //displaySphereVolumic(p1,15,2);
+  displayCilyndreVolumic(p1,axisVector,10,1);
   
  /* Point* p1=new Point(0,0,0);
   Point* p2=new Point(0,2,0);
