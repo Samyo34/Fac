@@ -179,6 +179,7 @@ void render_scene()
   //Voxel* l = new Voxel(p1,20);
   Point* p2 = new Point(0,15,0);
   Vector* axisVector = new Vector(p2->getX()-p1->getX(),p2->getY()-p1->getY(),p2->getZ()-p1->getZ());
+  Point* p3 = new Point(0,7.5,0);
 
   // Initialisation
   glColor3f(0,0,0);
@@ -191,10 +192,14 @@ void render_scene()
   glVertex3f(0,0,30);
   glEnd();
 
-
-  //displaySphereVolumic(p1,15,2);
-  displayCilyndreVolumic(p1,axisVector,10,1);
-  
+  glColor3f(1,1,0);
+  displaySphereVolumic(p3,10,1);
+  glColor3f(0,1,1);
+  displayCylindreVolumic(p1,axisVector,7,1);
+  //display_INTERSECTION_sphereCylindre(p3,10,p1,axisVector,7,1);
+  glColor3f(0.5,0.5,0.5);
+  //display_SOUSTRACTION_sphereCylindre(p3,10,p1,axisVector,7,1);
+  display_UNION_SphereCylindre(p3,10,p1,axisVector,7,1);
  /* Point* p1=new Point(0,0,0);
   Point* p2=new Point(0,2,0);
   Point*** pts = sphere(p1,20,nbMeri,nbPara);
