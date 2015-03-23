@@ -1,19 +1,12 @@
 #include "voxel.h"
+#include "vector.h"
+#include "oGl5.h"
 
 #include <math.h>
 using namespace std;
 int cpt;
 
 void displayVoxel(Point* centre, double length){
-	/*Point* p1 = new Point(centre->getX()-(length/2),centre->getY()+length/2,centre->getZ()+length/2);
-	Point* p2 = new Point(centre->getX()+length/2,centre->getY()+length/2,centre->getZ()+length/2);
-	Point* p3 = new Point(centre->getX()+length/2,centre->getY()-(length/2),centre->getZ()+length/2);
-	Point* p4 = new Point(centre->getX()-(length/2),centre->getY()-(length/2),centre->getZ()+length/2);
-
-	Point* p5 = new Point(centre->getX()-(length/2),centre->getY()+length/2,centre->getZ()-length/2);
-	Point* p6 = new Point(centre->getX()+length/2,centre->getY()+length/2,centre->getZ()-length/2);
-	Point* p7 = new Point(centre->getX()+length/2,centre->getY()-(length/2),centre->getZ()-length/2);
-	Point* p8 = new Point(centre->getX()-(length/2),centre->getY()-(length/2),centre->getZ()-length/2);*/
 	
 	Point* p1 = new Point(centre->getX()-(length),centre->getY()+length,centre->getZ()+length);
 	Point* p2 = new Point(centre->getX()+length,centre->getY()+length,centre->getZ()+length);
@@ -26,7 +19,7 @@ void displayVoxel(Point* centre, double length){
 	Point* p8 = new Point(centre->getX()-(length),centre->getY()-(length),centre->getZ()-length);
 
 	glPointSize(5);
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
@@ -34,7 +27,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p5->getX(),p5->getY(),p5->getZ());
 	glVertex3f(p6->getX(),p6->getY(),p6->getZ());
 	glVertex3f(p7->getX(),p7->getY(),p7->getZ());
@@ -42,7 +35,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p5->getX(),p5->getY(),p5->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glVertex3f(p6->getX(),p6->getY(),p6->getZ());
@@ -50,7 +43,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
 	glVertex3f(p4->getX(),p4->getY(),p4->getZ());
 	glVertex3f(p8->getX(),p8->getY(),p8->getZ());
@@ -58,7 +51,7 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glVertex3f(p4->getX(),p4->getY(),p4->getZ());
 	glVertex3f(p8->getX(),p8->getY(),p8->getZ());
@@ -66,13 +59,15 @@ void displayVoxel(Point* centre, double length){
 	glVertex3f(p1->getX(),p1->getY(),p1->getZ());
 	glEnd();
 
-	glBegin(GL_LINE_STRIP);
+	glBegin(GL_POLYGON);
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glVertex3f(p3->getX(),p3->getY(),p3->getZ());
 	glVertex3f(p7->getX(),p7->getY(),p7->getZ());
 	glVertex3f(p6->getX(),p6->getY(),p6->getZ());
 	glVertex3f(p2->getX(),p2->getY(),p2->getZ());
 	glEnd();
+
+	delete p1;delete p2;delete p3;delete p4;delete p5;delete p6;delete p7;delete p8;
 }
 
 bool intersect(Point* point, Point* centre, double rayon){
@@ -81,7 +76,7 @@ bool intersect(Point* point, Point* centre, double rayon){
 	double z = centre->getZ()-point->getZ();
 	Vector v(x,y,z);
 	//cout<<v.norme()<<" | "<<fabs(x)<<":"<<fabs(y)<<":"<<fabs(z)<<" | "<<rayon<<endl;
-	if(v.norme()<rayon){
+	if(v.norme()<=rayon){
 		return true;
 	}else{
 		return false;
@@ -110,7 +105,6 @@ void octree(Voxel* v, Point* centre, double rayon, double resolution){
 	v->decouper();
 	ssVox = v->getSousVoxel();
 	int res = voxelIntersect(v,centre,rayon);
-	cout<<res<<endl;
 	if(res > 0 && res < 8)/* && !intersect(centre, centre,rayon)*/{
 		if(v->getLength() >= resolution){
 			for(int i=0;i < (v->getSize());i++){
@@ -146,7 +140,7 @@ bool intersectCyl(Point* p, Point* axisOrigin, Vector* axisVector, double rayon)
 					v.getX()*axisVector->getY()-v.getY()*axisOrigin->getX());
 	double distance = prodVec.norme()/axisVector->norme();
 	//cout<<distance<<endl;
-	if(distance < rayon){
+	if(distance <= rayon){
 		return true;
 	}else{
 		return false;
@@ -179,6 +173,7 @@ void octreeCyl(Voxel* v, Point* axisOrigin, Vector* axisVector, double rayon, do
 			}
 		}else{
 			displayVoxel(v->getCentre(),v->getLength());
+
 		}
 	}else if (res == 8){
 		displayVoxel(v->getCentre(),v->getLength());
@@ -217,7 +212,7 @@ void octreeInter(Voxel* v, Point* centreSphere, double rayonSph, Point* axisOrig
 		}else{
 			displayVoxel(v->getCentre(),v->getLength());
 		}
-	}else if((resS == 8 && (resC>0 && resC<8))||(resC == 8 && (resS>0 && resS<8))){
+	}else if((resS == 8 && (resC>2 && resC<8))||(resC == 8 && (resS>2 && resS<8))){
 		displayVoxel(v->getCentre(),v->getLength());
 	}
 
@@ -233,13 +228,6 @@ void display_INTERSECTION_sphereCylindre(Point* centreSphere, double rayonSphere
 	}else{
 		v = new Voxel(centre,axisVectorCyl->norme());
 	}
-	glColor3f(1,0,0);
-	displayVoxel(v->getCentre(),v->getLength());
-	glColor3f(0,1,0);
-	displayVoxel(centreSphere,rayonSphere);
-	glColor3f(0,0,1);
-	displayVoxel(axisOriginCyl,rayonCyl*2);
-	glColor3f(0.5,0.5,0.5);
 	v->decouper();
 	Voxel** ssVox = v->getSousVoxel();
 	for(int i =0;i<8;i++){
@@ -291,9 +279,8 @@ void octreeUnion(Voxel* v, Point* centreSphere,double rayonSphere, Point* axisOr
 	ssVox = v->getSousVoxel();
 	int resS = voxelIntersect(v,centreSphere,rayonSphere);
 	int resC = voxelIntersectCyl(v, axisOrigin,axisVectorOrigin,rayonCyl);
-	//cout<<resS<<" "<<resC<<endl;
 	if((resS>0 && resS<8) || (resC<8 && resC>0)){
-		if(v->getLength()>=resolution){
+		if(v->getLength()>resolution){
 			for(int i=0;i<(v->getSize());i++){
 				octreeUnion(ssVox[i],centreSphere,rayonSphere,axisOrigin,axisVectorOrigin,rayonCyl,resolution);
 			}
@@ -307,13 +294,22 @@ void octreeUnion(Voxel* v, Point* centreSphere,double rayonSphere, Point* axisOr
 
 void display_UNION_SphereCylindre(Point* centreSphere, double rayonSphere, Point* axisOrigin, Vector* axisVectorOrigin, double rayonCyl, double resolution){
 	Voxel* v;
-	Point* centre = new Point((centreSphere->getX()+axisOrigin->getX())/2,(centreSphere->getY()+axisOrigin->getY())/2,(centreSphere->getZ()+axisOrigin->getZ())/2);
-	if(rayonSphere>axisVectorOrigin->norme() && rayonSphere>rayonCyl){
-		v = new Voxel(centre,rayonSphere);
-	}else if(rayonCyl>axisVectorOrigin->norme()){
-		v = new Voxel(centre,rayonCyl);
+	Point* centre = new Point((fabs(centreSphere->getX()-axisOrigin->getX()))/2,fabs(centreSphere->getY()-axisOrigin->getY())/2,
+								fabs(centreSphere->getZ()-axisOrigin->getZ())/2);
+	Vector vec1(centre->getX()-centreSphere->getX(),centre->getY()-centreSphere->getY(), centre->getZ()-centreSphere->getZ());
+	Vector vec2(centre->getX()-axisOrigin->getX(),centre->getY()-axisOrigin->getY(), centre->getZ()-axisOrigin->getZ());
+	double res;
+	if(vec1.norme()>vec2.norme()){
+		res = vec1.norme();
 	}else{
-		v = new Voxel(centre,axisVectorOrigin->norme());
+		res = vec2.norme();
+	}
+	if(rayonSphere>axisVectorOrigin->norme() && rayonSphere>rayonCyl){
+		v = new Voxel(centre,rayonSphere+res);
+	}else if(rayonCyl>axisVectorOrigin->norme()){
+		v = new Voxel(centre,rayonCyl+res);
+	}else{
+		v = new Voxel(centre,axisVectorOrigin->norme()+res);
 	}
 
 	v->decouper();

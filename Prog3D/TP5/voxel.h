@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <iostream>
-#include "../TP4/point.h"
-#include "../TP4/vector.h"
+#include "point.h"
+#include "vector.h"
 #include "../TP4/oGl3.h"
 #include "../TP4/figureGl.h"
 

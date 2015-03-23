@@ -13,8 +13,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "../TP4/point.h"
-#include "../TP4/vector.h"
+#include "point.h"
+#include "vector.h"
 #include "../TP4/oGl3.h"
 #include "../TP4/figureGl.h"
 #include "voxel.h"
@@ -193,13 +193,13 @@ void render_scene()
   glEnd();
 
   glColor3f(1,1,0);
-  displaySphereVolumic(p3,10,1);
+ // displaySphereVolumic(p3,10,1);
   glColor3f(0,1,1);
   displayCylindreVolumic(p1,axisVector,7,1);
-  //display_INTERSECTION_sphereCylindre(p3,10,p1,axisVector,7,1);
   glColor3f(0.5,0.5,0.5);
-  //display_SOUSTRACTION_sphereCylindre(p3,10,p1,axisVector,7,1);
-  display_UNION_SphereCylindre(p3,10,p1,axisVector,7,1);
+  //display_INTERSECTION_sphereCylindre(p3,10,p1,axisVector,7,1);
+  //display_SOUSTRACTION_sphereCylindre(p3,10,p1,axisVector,7,0.5);
+  //display_UNION_SphereCylindre(p3,10,p1,axisVector,7,0.5);
  /* Point* p1=new Point(0,0,0);
   Point* p2=new Point(0,2,0);
   Point*** pts = sphere(p1,20,nbMeri,nbPara);
