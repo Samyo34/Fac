@@ -1,13 +1,14 @@
 package utils.affichage;
 import javax.swing.*;
 
+import structure.Pair;
 import utils.couleurs.Couleur;
 import utils.fileIo.ReadWritePoint;
-
 import utils.vecteur.PointVisible;
+import utils.vecteur.Role;
+import utils.vecteur.Vecteur;
 
 import java.awt.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -15,8 +16,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.io.IOException;
-
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Vue extends JPanel implements MouseWheelListener, MouseListener, ActionListener{
 	Color bgColor = Couleur.bg; // la couleur de fond de la fen�tre
@@ -65,7 +66,22 @@ public class Vue extends JPanel implements MouseWheelListener, MouseListener, Ac
 			}
 	}
 	
-	
+	public ArrayList<PointVisible> pelureOignon(ArrayList<PointVisible> points){
+		ArrayList<PointVisible> res = new ArrayList<PointVisible>();
+		ArrayList<PointVisible> pelure = jarvis(points);
+		if(points.size()>3){
+			for(PointVisible p : points){
+				for(PointVisible p2 : pelure){
+					if(!(p.getLabel().equals(p2.getLabel()))){
+						res.add(p);
+					}
+				}
+			}
+			return pelureOignon(res);
+		}else{
+			return points;
+		}
+	}
 
 				
 	// m�thode utilitaire 
@@ -76,13 +92,45 @@ public class Vue extends JPanel implements MouseWheelListener, MouseListener, Ac
 	}
 	
 	public ArrayList<PointVisible> graham(ArrayList<PointVisible> points){
-		//TODO : terminer algo (voir page 2 du document avec les TPs)
 		ArrayList<PointVisible> list = new ArrayList<PointVisible>();
+		ArrayList<PointVisible>env = new ArrayList<PointVisible>();
 		PointVisible pMin = getMin(points);
+		list = triAngles(pMin,points);
+		env.add(pMin);
+		env.add(list.remove(0));
+		env.add(list.remove(0));
+		for(PointVisible p : list){
+			while(!p.anglePolaireInferieur(env.get(0), env.get(1))){// si p est à droite
+				env.remove(env.size()-1);
+			}
+			env.add(p);
+		}
 		
-		
-		
+		 
 		return list;
+	}
+	
+	public double getAnglePolaire(PointVisible origin, PointVisible p){
+		PointVisible unit =  new PointVisible((int)origin.getX()+1,0, Role.undefined);
+		Vecteur v0 = new Vecteur(origin,unit);// OM
+		Vecteur v1 = new Vecteur(origin, p);// OMi
+		double det = (double)v0.determinant(v1);
+		return det;
+	}
+	
+	public ArrayList<PointVisible> triAngles(PointVisible origin, ArrayList<PointVisible> points){
+		ArrayList<PointVisible> tri = new ArrayList<PointVisible>();
+		ArrayList<Pair> temp = new ArrayList<Pair>();
+		for(PointVisible p : points){
+			temp.add(new Pair(p, getAnglePolaire(origin, p)));
+		}
+		Collections.sort(temp);// tri temp selon les critères defini dans la class pair
+		for(Pair p : temp){
+			tri.add(p.getPoint());
+		}
+		return tri;
+		
+		
 	}
 	
 	
