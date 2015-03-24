@@ -18,6 +18,8 @@ Vector::Vector(Vector &p){
     this->z=p.getZ();
 }
 
+
+
 double Vector::getX(){
     return this->x;
 }

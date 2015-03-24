@@ -68,13 +68,15 @@ public class PointVisible extends Rectangle implements Comparator<PointVisible>{
 		return label;
 	}
 	
+	/*
+	 * Retourne vrai si this est a gauche de p0p1
+	 */
 	public boolean anglePolaireInferieur(PointVisible p0, PointVisible p1){
-		//TODO : VOIR TD1 EXO1 (angle polaire, determinant...)
 		double x1 = p1.getX()-p0.getX();
 		double y1 = p1.getY()-p0.getY();
 		double x2 = this.getX()-p0.getY();
 		double y2 = this.getY()-p0.getY();
-		return (x2*y1-x1-y2)>0;
+		return (x1*y2-x2*y1)>0;
 	}
 	
 	public PointVisible getPlusADroite(ArrayList<PointVisible> points, PointVisible point){
