@@ -15,7 +15,7 @@ float sizeZ=5;
 
 struct resultat{
 	bool isOne; // vrai si il y en au moins 1;
-	int pos; // position du Voxel "coupable"
+	int pos[6]; // position du Voxel "coupable"
 	// 0: dessus(y+1), 1: dessous(y-1), 2: devant(z+1), 3: derrière(z-1), 4: gauche(x-1), 5 droite(x+1)
 };
 
@@ -52,31 +52,30 @@ resultat isVoisInf(int*** data,int x, int y, int z , int seuil){
 	resultat res;
 	if(getValue(data,x,y+1,z)<seuil){
 		res.isOne = true;
-		res.pos = 0;
+		res.pos[0]=1;
 		return res;
 	}else if(getValue(data,x,y-1,z)<seuil){
 		res.isOne = true;
-		res.pos = 1;
+		res.pos[1]= 1;
 		return res;
 	}else if(getValue(data,x+1,y,z)<seuil){
 		res.isOne = true;
-		res.pos = 5;
+		res.pos[5] = 1;
 		return res;
 	}else if(getValue(data,x-1,y,z)<seuil){
 		res.isOne = true;
-		res.pos = 4;
+		res.pos[4] = 1;
 		return res;
 	}else if(getValue(data,x,y,z+1)<seuil){
 		res.isOne = true;
-		res.pos = 2;
+		res.pos[2] = 1;
 		return res;
 	}else if(getValue(data,x,y,z-1)<seuil){
 		res.isOne = true;
-		res.pos = 3;
+		res.pos[3] = 1;
 		return res;
 	}else{
 		res.isOne = false;
-		res.pos = -1;
 		return res;
 	}
 }
@@ -86,251 +85,139 @@ float*** getTriangle(int*** data, int x, int y, int z, int pos){
 	triangles[0]=new float*[9];
 	triangles[1]=new float*[9];
 	float val;
-	/*val = (x*sizeX-sizeX/2);
-	triangles[0][0]=new float(val);
-	cout<<"triangles "<<*triangles[0][0]<<endl;
-	cout<<"la"<<endl;*/
 	switch (pos){
 		case 0:
 		// premier triangle
-		val = (x*sizeX-sizeX/2);
-		triangles[0][0]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][1]=new float(val);
-		val =z*sizeZ+sizeZ/2;
-		triangles[0][2]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][3]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][4]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[0][5]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][6]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][7]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][8]=new float(val);
+		triangles[0][0]=new float(x*sizeX-sizeX/2);
+		triangles[0][1]=new float(y*sizeY+sizeY/2);
+		triangles[0][2]=new float(z*sizeZ+sizeZ/2);
+		triangles[0][3]=new float(x*sizeX+sizeX/2);
+		triangles[0][4]=new float(y*sizeY+sizeY/2);
+		triangles[0][5]=new float(z*sizeZ-sizeZ/2);
+		triangles[0][6]=new float(x*sizeX+sizeX/2);
+		triangles[0][7]=new float(y*sizeY+sizeY/2);
+		triangles[0][8]=new float(z*sizeZ+sizeZ/2);
 
 		// seconde triangle
-		val = x*sizeX-sizeX/2;
-		triangles[1][0]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[1][1]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[1][2]=new float(val);
-		val = x*sizeX-sizeX/2;
-		triangles[1][3]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[1][4]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][5]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[1][6]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[1][7]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][8]=new float(val);
+		triangles[1][0]=new float(x*sizeX-sizeX/2);
+		triangles[1][1]=new float(y*sizeY+sizeY/2);
+		triangles[1][2]=new float(z*sizeZ+sizeZ/2);
+		triangles[1][3]=new float(x*sizeX-sizeX/2);
+		triangles[1][4]=new float(y*sizeY+sizeY/2);
+		triangles[1][5]=new float(z*sizeZ-sizeZ/2);
+		triangles[1][6]=new float(x*sizeX+sizeX/2);
+		triangles[1][7]=new float(y*sizeY+sizeY/2);
+		triangles[1][8]=new float(z*sizeZ-sizeZ/2);
 		break;
 		case 1:
 		// premier triangle
-		val = x*sizeX-sizeX/2;
-		triangles[0][0]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[0][1]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][2]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][3]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[0][4]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[0][5]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][6]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[0][7]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][8]=new float(val);
+		triangles[0][0]=new float(x*sizeX-sizeX/2);
+		triangles[0][1]=new float(y*sizeY-sizeY/2);
+		triangles[0][2]=new float(z*sizeZ+sizeZ/2);
+		triangles[0][3]=new float(x*sizeX+sizeX/2);
+		triangles[0][4]=new float(y*sizeY-sizeY/2);
+		triangles[0][5]=new float(z*sizeZ-sizeZ/2);
+		triangles[0][6]=new float(x*sizeX+sizeX/2);
+		triangles[0][7]=new float(y*sizeY-sizeY/2);
+		triangles[0][8]=new float(z*sizeZ+sizeZ/2);
 		// seconde triangle
-		val = x*sizeX-sizeX/2;
-		triangles[1][0]=new float(val);
-		val =y*sizeY-sizeY/2;
-		triangles[1][1]=new float(val);
-		val =z*sizeZ+sizeZ/2;
-		triangles[1][2]=new float(val);
-		val = x*sizeX-sizeX/2;
-		triangles[1][3]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][4]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][5]=new float(val);
-		val =x*sizeX+sizeX/2;
-		triangles[1][6]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][7]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][8]=new float(val);
+		triangles[1][0]=new float(x*sizeX-sizeX/2);
+		triangles[1][1]=new float(y*sizeY-sizeY/2);
+		triangles[1][2]=new float(z*sizeZ+sizeZ/2);
+		triangles[1][3]=new float(x*sizeX-sizeX/2);
+		triangles[1][4]=new float(y*sizeY-sizeY/2);
+		triangles[1][5]=new float(z*sizeZ-sizeZ/2);
+		triangles[1][6]=new float(x*sizeX+sizeX/2);
+		triangles[1][7]=new float(y*sizeY-sizeY/2);
+		triangles[1][8]=new float(z*sizeZ-sizeZ/2);
 		break;
 		case 2:
 		// premier triangle
-		val = x*sizeX-sizeX/2;
-		triangles[0][0]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][1]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][2]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][3]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][4]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][5]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][6]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[0][7]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][8]=new float(val);
+		triangles[0][0]=new float(x*sizeX-sizeX/2);
+		triangles[0][1]=new float(y*sizeY+sizeY/2);
+		triangles[0][2]=new float(z*sizeZ+sizeZ/2);
+		triangles[0][3]=new float(x*sizeX+sizeX/2);
+		triangles[0][4]=new float(y*sizeY+sizeY/2);
+		triangles[0][5]=new float(z*sizeZ+sizeZ/2);
+		triangles[0][6]=new float(x*sizeX+sizeX/2);
+		triangles[0][7]=new float(y*sizeY-sizeY/2);
+		triangles[0][8]=new float(z*sizeZ+sizeZ/2);
 		// seconde triangle
-		val = x*sizeX-sizeX/2;
-		triangles[1][0]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[1][1]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[1][2]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[1][3]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][4]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[1][5]=new float(val);
-		val = x*sizeX-sizeX/2;
-		triangles[1][6]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][7]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[1][8]=new float(val);
+		triangles[1][0]=new float(x*sizeX-sizeX/2);
+		triangles[1][1]=new float(y*sizeY+sizeY/2);
+		triangles[1][2]=new float(z*sizeZ+sizeZ/2);
+		triangles[1][3]=new float(x*sizeX+sizeX/2);
+		triangles[1][4]=new float(y*sizeY-sizeY/2);
+		triangles[1][5]=new float(z*sizeZ+sizeZ/2);
+		triangles[1][6]=new float(x*sizeX-sizeX/2);
+		triangles[1][7]=new float(y*sizeY-sizeY/2);
+		triangles[1][8]=new float(z*sizeZ+sizeZ/2);
 		break;
 		case 3:
 		// premier triangle
-		val = x*sizeX-sizeX/2;
-		triangles[0][0]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][1]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[0][2]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][3]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][4]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[0][5]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][6]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[0][7]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[0][8]=new float(val);
+		triangles[0][0]=new float(x*sizeX-sizeX/2);
+		triangles[0][1]=new float(y*sizeY+sizeY/2);
+		triangles[0][2]=new float(z*sizeZ-sizeZ/2);
+		triangles[0][3]=new float(x*sizeX+sizeX/2);
+		triangles[0][4]=new float(y*sizeY+sizeY/2);
+		triangles[0][5]=new float(z*sizeZ-sizeZ/2);
+		triangles[0][6]=new float(x*sizeX+sizeX/2);
+		triangles[0][7]=new float(y*sizeY-sizeY/2);
+		triangles[0][8]=new float(z*sizeZ-sizeZ/2);
 		// seconde triangle
-		val = x*sizeX-sizeX/2;
-		triangles[1][0]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][1]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][2]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[1][3]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[1][4]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][5]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[1][6]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][7]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][8]=new float(val);
+		triangles[1][0]=new float(x*sizeX-sizeX/2);
+		triangles[1][1]=new float(y*sizeY-sizeY/2);
+		triangles[1][2]=new float(z*sizeZ-sizeZ/2);
+		triangles[1][3]=new float(x*sizeX+sizeX/2);
+		triangles[1][4]=new float(y*sizeY+sizeY/2);
+		triangles[1][5]=new float(z*sizeZ-sizeZ/2);
+		triangles[1][6]=new float(x*sizeX+sizeX/2);
+		triangles[1][7]=new float(y*sizeY-sizeY/2);
+		triangles[1][8]=new float(z*sizeZ-sizeZ/2);
 		break;
 		case 4:
 		// premier triangle
-		val = x*sizeX-sizeX/2;
-		triangles[0][0]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][1]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][2]=new float(val);
-		val = x*sizeX-sizeX/2;
-		triangles[0][3]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[0][4]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][5]=new float(val);
-		val = x*sizeX-sizeX/2;
-		triangles[0][6]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][7]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[0][8]=new float(val);
+		triangles[0][0]=new float(x*sizeX-sizeX/2);
+		triangles[0][1]=new float(y*sizeY+sizeY/2);
+		triangles[0][2]=new float(z*sizeZ+sizeZ/2);
+		triangles[0][3]=new float(x*sizeX-sizeX/2);
+		triangles[0][4]=new float(y*sizeY-sizeY/2);
+		triangles[0][5]=new float(z*sizeZ+sizeZ/2);
+		triangles[0][6]=new float(x*sizeX-sizeX/2);
+		triangles[0][7]=new float(y*sizeY+sizeY/2);
+		triangles[0][8]=new float(z*sizeZ-sizeZ/2);
 		// seconde triangle
-		val =z*sizeZ-sizeZ/2;
-		triangles[1][0]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][1]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[1][2]=new float(val);
-		val = x*sizeX-sizeX/2;
-		triangles[1][3]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][4]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][5]=new float(val);
-		val = x*sizeX-sizeX/2;
-		triangles[1][6]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[1][7]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][8]=new float(val);
+		triangles[1][0]=new float(z*sizeZ-sizeZ/2);
+		triangles[1][1]=new float(y*sizeY-sizeY/2);
+		triangles[1][2]=new float(z*sizeZ+sizeZ/2);
+		triangles[1][3]=new float(x*sizeX-sizeX/2);
+		triangles[1][4]=new float(y*sizeY-sizeY/2);
+		triangles[1][5]=new float(z*sizeZ-sizeZ/2);
+		triangles[1][6]=new float(x*sizeX-sizeX/2);
+		triangles[1][7]=new float(y*sizeY+sizeY/2);
+		triangles[1][8]=new float(z*sizeZ-sizeZ/2);
 		break;
 		case 5:
 		// premier triangle
-		val = x*sizeX+sizeX/2;
-		triangles[0][0]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][1]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][2]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][3]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[0][4]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[0][5]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[0][6]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[0][7]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[0][8]=new float(val);
+		triangles[0][0]=new float(x*sizeX+sizeX/2);
+		triangles[0][1]=new float(y*sizeY+sizeY/2);
+		triangles[0][2]=new float(z*sizeZ+sizeZ/2);
+		triangles[0][3]=new float(x*sizeX+sizeX/2);
+		triangles[0][4]=new float(y*sizeY+sizeY/2);
+		triangles[0][5]=new float(z*sizeZ-sizeZ/2);
+		triangles[0][6]=new float(x*sizeX+sizeX/2);
+		triangles[0][7]=new float(y*sizeY-sizeY/2);
+		triangles[0][8]=new float(z*sizeZ+sizeZ/2);
 		// seconde triangle
-		val = x*sizeX+sizeX/2;
-		triangles[1][0]=new float(val);
-		val = y*sizeY+sizeY/2;
-		triangles[1][1]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][2]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[1][3]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][4]=new float(val);
-		val = z*sizeZ-sizeZ/2;
-		triangles[1][5]=new float(val);
-		val = x*sizeX+sizeX/2;
-		triangles[1][6]=new float(val);
-		val = y*sizeY-sizeY/2;
-		triangles[1][7]=new float(val);
-		val = z*sizeZ+sizeZ/2;
-		triangles[1][8]=new float(val);
+		triangles[1][0]=new float(x*sizeX+sizeX/2);
+		triangles[1][1]=new float(y*sizeY+sizeY/2);
+		triangles[1][2]=new float(z*sizeZ-sizeZ/2);
+		triangles[1][3]=new float(x*sizeX+sizeX/2);
+		triangles[1][4]=new float(y*sizeY-sizeY/2);
+		triangles[1][5]=new float(z*sizeZ-sizeZ/2);
+		triangles[1][6]=new float(x*sizeX+sizeX/2);
+		triangles[1][7]=new float(y*sizeY-sizeY/2);
+		triangles[1][8]=new float(z*sizeZ+sizeZ/2);
 		break;
 
 	}
@@ -341,7 +228,9 @@ float*** getTriangle(int*** data, int x, int y, int z, int pos){
 void maillage(int*** data, int seuil){
  	FILE* out = fopen("maillage.txt","w");
  	char stringW[150];
- 	float*** triangles; 
+ 	float*** triangles;
+ 	resultat res;
+ 	res.pos[0]=0;res.pos[1]=0;res.pos[2]=0;res.pos[3]=0;res.pos[4]=0;res.pos[5]=0; 
 
 	sprintf(stringW, "%s \n",  "solid name" );
 	cout<<stringW;
@@ -355,27 +244,29 @@ void maillage(int*** data, int seuil){
 				if(getValue(data,j,k,i)>seuil){
 					resultat res = isVoisInf(data, j,k,i,seuil);
 					if(res.isOne){
-						triangles = getTriangle(data,j,k,i,res.pos);
-						for(int l = 0;l<2;l++){
-							//cout<<*triangles[0][0]<<":"<<*triangles[0][1]<<":"<<*triangles[0][2]<<endl;
-							sprintf(stringW, "%s \n",  "outer loop");
-							fwrite(stringW, sizeof(stringW),1,out);
-							cout<<stringW;
-							sprintf(stringW, "%s %f %f %f \n",  "vertex ",*triangles[l][0],*triangles[l][1],*triangles[l][2] );
-							cout<<stringW;
-							fwrite(stringW, sizeof(stringW),1,out);
-							sprintf(stringW, "%s %lf %lf %lf \n",  "vertex ",*triangles[l][3],*triangles[l][4],*triangles[l][5] );
-							cout<<stringW;
-							fwrite(stringW, sizeof(stringW),1,out);
-							sprintf(stringW, "%s %lf %lf %lf \n",  "vertex ",*triangles[l][6],*triangles[l][7],*triangles[l][8] );
-							cout<<stringW;
-							fwrite(stringW, sizeof(stringW),1,out);
-							
-							sprintf(stringW, "%s \n",  "end loop" );
-							cout<<stringW;
-							fwrite(stringW, sizeof(stringW),1,out);
-						}
-												
+						for(int p=0;p<6;p++){
+							if(res.pos[p]==1){
+								triangles = getTriangle(data,j,k,i,res.pos[p]);
+								for(int l = 0;l<2;l++){
+									sprintf(stringW, "%s \n",  "outer loop");
+									fwrite(stringW, sizeof(stringW),1,out);
+									cout<<stringW;
+									sprintf(stringW, "%s %f %f %f \n",  "vertex ",*triangles[l][0],*triangles[l][1],*triangles[l][2] );
+									cout<<stringW;
+									fwrite(stringW, sizeof(stringW),1,out);
+									sprintf(stringW, "%s %lf %lf %lf \n",  "vertex ",*triangles[l][3],*triangles[l][4],*triangles[l][5] );
+									cout<<stringW;
+									fwrite(stringW, sizeof(stringW),1,out);
+									sprintf(stringW, "%s %lf %lf %lf \n",  "vertex ",*triangles[l][6],*triangles[l][7],*triangles[l][8] );
+									cout<<stringW;
+									fwrite(stringW, sizeof(stringW),1,out);
+									
+									sprintf(stringW, "%s \n",  "end loop" );
+									cout<<stringW;
+									fwrite(stringW, sizeof(stringW),1,out);
+								}
+							}
+						}						
 					}
 				}
 			}
