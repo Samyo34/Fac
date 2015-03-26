@@ -15,8 +15,8 @@ float sizeZ=5;
 
 struct resultat{
 	bool isOne; // vrai si il y en au moins 1;
-	int pos[6]; // position du Voxel "coupable"
-	// 0: dessus(y+1), 1: dessous(y-1), 2: devant(z+1), 3: derrière(z-1), 4: gauche(x-1), 5 droite(x+1)
+	int pos[3]; // position du Voxel "coupable"
+	// 0: dessus(y+1), 1: devant(z+1), 2: gauche(x-1)
 };
 
 int getValue(int ***data,int x, int y, int z){
@@ -47,6 +47,7 @@ void setValue(int*** data, int x, int y, int z, int value){
 /*
  * Retourne vrai si un des voisins du Voxel (x,y,z) a une
  * valeur inferieur au seuil (les vrai voxels : taille + position)
+ * Certaines faces ne sont pas traité pour eviter les doublons inutil
  */
 resultat isVoisInf(int*** data,int x, int y, int z , int seuil){
 	resultat res;
@@ -54,25 +55,13 @@ resultat isVoisInf(int*** data,int x, int y, int z , int seuil){
 		res.isOne = true;
 		res.pos[0]=1;
 		return res;
-	}else if(getValue(data,x,y-1,z)<seuil){
-		res.isOne = true;
-		res.pos[1]= 1;
-		return res;
-	}else if(getValue(data,x+1,y,z)<seuil){
-		res.isOne = true;
-		res.pos[5] = 1;
-		return res;
 	}else if(getValue(data,x-1,y,z)<seuil){
-		res.isOne = true;
-		res.pos[4] = 1;
-		return res;
-	}else if(getValue(data,x,y,z+1)<seuil){
 		res.isOne = true;
 		res.pos[2] = 1;
 		return res;
-	}else if(getValue(data,x,y,z-1)<seuil){
+	}else if(getValue(data,x,y,z+1)<seuil){
 		res.isOne = true;
-		res.pos[3] = 1;
+		res.pos[1] = 1;
 		return res;
 	}else{
 		res.isOne = false;
@@ -230,8 +219,8 @@ void maillage(int*** data, int seuil){
  	char stringW[150];
  	float*** triangles;
  	resultat res;
- 	res.pos[0]=0;res.pos[1]=0;res.pos[2]=0;res.pos[3]=0;res.pos[4]=0;res.pos[5]=0; 
 
+ 	res.pos[0]=0;res.pos[1]=0;res.pos[2]=0;
 	sprintf(stringW, "%s \n",  "solid name" );
 	cout<<stringW;
 	fwrite(stringW, sizeof(stringW),1,out);
@@ -244,7 +233,7 @@ void maillage(int*** data, int seuil){
 				if(getValue(data,j,k,i)>seuil){
 					resultat res = isVoisInf(data, j,k,i,seuil);
 					if(res.isOne){
-						for(int p=0;p<6;p++){
+						for(int p=0;p<3;p++){
 							if(res.pos[p]==1){
 								triangles = getTriangle(data,j,k,i,res.pos[p]);
 								for(int l = 0;l<2;l++){
@@ -335,9 +324,9 @@ int main(int argc, char* argv[]){
   		data[i]=val;
   	}
     int*** dt = to3DTab(data,nbLue);
-    int p = getValue(dt,200,200,20);
+   	int p = getValue(dt,200,200,20);
   	//cout<<"Voxel max : "<<max<<", Voxel min : "<<min<<", Voxel en 200,200,20 : "<<p<<endl;
-  	maillage(dt, 200);
+  	maillage(dt, 150);
 
 
 }
