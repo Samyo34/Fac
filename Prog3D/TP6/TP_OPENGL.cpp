@@ -19,6 +19,7 @@
 #include "../TP4/figureGl.h"
 #include "voxel.h"
 #include "oGl6.h"
+#include "triangle.h"
 
 /* Dans les salles de TP, vous avez généralement accès aux glut dans C:\Dev. Si ce n'est pas le cas, téléchargez les .h .lib ...
 Vous pouvez ensuite y faire référence en spécifiant le chemin dans visual. Vous utiliserez alors #include <glut.h>.
@@ -42,12 +43,15 @@ Si vous mettez glut dans le répertoire courant, on aura alors #include "glut.h"
 #define KEY_ESC 27
 #define KEY_PLUS 112
 #define KEY_MOINS 109
+#define KEY_ZOOM 97
+#define KEY_UNZOOM 122
 
 GLint winWidth=600, winHeight=600;
-GLfloat eyeX=0.0, eyeY=0.0, eyeZ=2.0;
+GLfloat eyeX=0.0, eyeY=0.0, eyeZ=1.0;
 GLfloat theta=270.0, phi=180.0;
-GLfloat upX=0.0, upY=1.0, upZ=0.0;
+GLfloat upX=10.0, upY=10.0, upZ=10.0;
 GLfloat r=2.0;
+double zMin = -5,Zmax=5;
 static int nbMeri = 8;
 static int nbPara = 8;
 
@@ -108,7 +112,7 @@ GLvoid window_reshape(GLsizei width, GLsizei height)
   // ici, vous verrez pendant le cours sur les projections qu'en modifiant les valeurs, il est
   // possible de changer la taille de l'objet dans la fenêtre. Augmentez ces valeurs si l'objet est
   // de trop grosse taille par rapport à la fenêtre.
-  glOrtho(-30.0, 30.0, -30.0, 30.0, -30.0, 30.0);
+  glOrtho(-5.0, 5.0, -5.0, 5.0, zMin, Zmax);
 
   // toutes les transformations suivantes s´appliquent au modèle de vue
   glMatrixMode(GL_MODELVIEW);
@@ -148,6 +152,13 @@ GLvoid window_key(unsigned char key, int x, int y)
     nbPara -= 1;
     glutPostRedisplay();
     break;
+    case KEY_ZOOM:
+    eyeZ += -0.5;
+    break;
+    case KEY_UNZOOM:
+    eyeZ += 0.5;
+    break;
+
 
     default:
     printf ("La touche %d n est pas active.\n", key);
@@ -173,14 +184,6 @@ void onMouseMove(int x, int y) {
 /////////////////////////////////////////////////////////////////////////////////////////
 void render_scene()
 {
-
-  Point* p1 = new Point(0,0,0);
-  //displayVoxel(p1,4);
-  //Voxel* l = new Voxel(p1,20);
-  Point* p2 = new Point(0,15,0);
-  Vector* axisVector = new Vector(p2->getX()-p1->getX(),p2->getY()-p1->getY(),p2->getZ()-p1->getZ());
-  Point* p3 = new Point(0,7.5,0);
-
   // Initialisation
   glColor3f(0,0,0);
   glBegin(GL_LINES);
@@ -188,9 +191,11 @@ void render_scene()
   glVertex3f(30,0,0);
   glVertex3f(0,0,0);
   glVertex3f(0,30,0);
+  glColor3f(0,0,1);
   glVertex3f(0,0,0);
   glVertex3f(0,0,30);
   glEnd();
+  affiche();
 
  
 
@@ -211,6 +216,9 @@ int main(int argc, char **argv)
   glutInitWindowPosition(0, 0);
   glutCreateWindow("Premier exemple : carré");
 
+  char out[256]="buddha.off";
+  readFile(out);
+ 
   // initialisation de OpenGL et de la scène
   initGL();
   init_scene();
