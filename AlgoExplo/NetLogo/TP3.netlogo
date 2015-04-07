@@ -105,16 +105,9 @@ to search-step
     set in-nodes remove-item 0 in-nodes
     if evaluer cnode = 0
     [
-      affecte
+      set in-nodes generate
     ]
   ]  
-end
-
-to affecte
-  foreach generate
-  [
-    set in-nodes lput ? in-nodes
-  ]
 end
 
 to-report evaluer [node]
