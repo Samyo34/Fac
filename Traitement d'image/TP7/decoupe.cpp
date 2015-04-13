@@ -87,6 +87,10 @@ int getImgByVal(OCTET* ImgIn, int index, int lignes, int colonnes){
 	//cout<<moyenne<<":"<<index<<":"<<vals[moyenne]<<" | ";
 }
 
+
+/*
+ * Creer une image réduite de ImgIn (8x8)
+ */
 void creerMoz(OCTET* ImgIn, OCTET* ImgOut){
 	OCTET* moz,*temp;
 	allocation_tableau(moz,OCTET,64);
@@ -97,7 +101,7 @@ void creerMoz(OCTET* ImgIn, OCTET* ImgOut){
 		for(int j =0;j<512;j+=64){
 			
 			moz[cpt]=(int)temp[i*512+j];
-			cout<<(int)temp[i*512+j]<<"="<<(int)moz[cpt]<<":";
+			//cout<<(int)temp[i*512+j]<<"="<<(int)moz[cpt]<<":";
 			cpt++;
 		}
 	}
@@ -112,7 +116,7 @@ void creerMoz(OCTET* ImgIn, OCTET* ImgOut){
 }
 
 int findImg(int* val, int ndg, int nbtest){
-	if(val[ndg]!=1){
+	if(val[ndg]!=-1){
 		return val[ndg];
 	}else{
 		if(val[ndg+nbtest]!=-1){
@@ -120,27 +124,34 @@ int findImg(int* val, int ndg, int nbtest){
 		}else if(val[ndg-nbtest]!=-1){
 			return val[ndg-nbtest];
 		}else{
-			return findImg(val,ndg,nbtest);
+			return findImg(val,ndg,nbtest+1);
 		}
 	}
 }
 
 void placeMoz(OCTET* ImgIn, OCTET* ImgOut,int* val, int nH, int nW){
 	char img[64];
-	OCTET* lue;
+	OCTET* lue;// stockage de l'image lue 512x512
 	allocation_tableau(lue, OCTET, 512*512);
+	OCTET* mozaique;// stockage de l'image réduite 8x8
+	allocation_tableau(mozaique,OCTET,64);
 	for(int i =0; i<nH; i+=8){
 		for(int j=0;j<nW;j+=8){
+			// Récuperation de l'image ayant une valeur proche de ImgIn[i*512+j]
 			sprintf(img,"%s%d%s","./BOWS2OrigEp3/",findImg(val,ImgIn[i*512+j],0),".pgm");
 			lire_image_pgm(img,lue,512*512);
-			creerMoz(ImgIn, lue);
+			// Transformation en image de 8x8
+			creerMoz(lue, mozaique);
+			cout<<"la"<<endl;
 			int cpt =0;
-			for(int k =i;k<i+8;k++){
-				for(int l = j;l<l+8;l++){
-					ImgOut[k+512+j]=lue[cpt];
+			for(int k =i;k<(i+8);k++){
+				for(int l = j;l<(j+8);l++){
+					cout<<"k : "<<k<<"    l : "<<l<<endl;
+					ImgOut[k*512+l]=mozaique[cpt];
 					cpt++;
 				}
 			}
+			cout<<"la2"<<endl;
 
 		}
 	}
@@ -166,7 +177,7 @@ int main(int argc, char* argv[]){
 	allocation_tableau(ImgOut, OCTET, nTaille);
 	allocation_tableau(ImgOut2,OCTET,nTaille);
 
-
+	// Lecture des n fichiers (servant à creer la mozaique)
 	OCTET *ImgMoz;
 	char img[64];
 	int val[256];
@@ -183,6 +194,7 @@ int main(int argc, char* argv[]){
 		cout<<val[i]<<" | ";
 	}
 	cout<<endl;
+
 	creerMoz(ImgIn, ImgOut);
 
 	divRecursive(ImgIn, ImgOut,0,0, nTaille, nH, nW,7);
@@ -194,6 +206,7 @@ int main(int argc, char* argv[]){
 	}
 	cout<<endl;*/
 	placeMoz(ImgOut, ImgOut2, val,  nH, nW);
+	cout<<"la3"<<endl;
 
 	ecrire_image_pgm(cNomImgEcrite, ImgOut2, nH, nW);
 	free(ImgIn);
