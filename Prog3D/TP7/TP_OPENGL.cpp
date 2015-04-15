@@ -51,7 +51,7 @@ GLfloat upX=10.0, upY=10.0, upZ=10.0;
 GLfloat r=2.0;
 double zMin = -5,Zmax=5;
 static int nbMeri = 8;
-static int nbPara = 8;
+static int nbPara = nbMeri*2;
 
 
 // Entêtes de fonctions
@@ -142,12 +142,12 @@ GLvoid window_key(unsigned char key, int x, int y)
     break;
     case KEY_PLUS:
     nbMeri += 1;
-    nbPara += 1;
+    //nbPara += 1;
     glutPostRedisplay();
     break;
     case KEY_MOINS:
     nbMeri -= 1;
-    nbPara -= 1;
+    //nbPara -= 1;
     glutPostRedisplay();
     break;
     case KEY_ZOOM:
@@ -196,10 +196,10 @@ void render_scene()
 
   Point* p1=new Point(0,0,0);
   Point* p2=new Point(0,2,0);
-  Point*** pts = sphere(p1,20,nbMeri,nbPara);
-  drawSphere(pts,nbMeri,nbPara);
-  //Point*** pts = cylindre(p1,10,30,nbMeri);
-  //drawCylindre(pts,nbMeri);
+  //Point*** pts = sphere(p1,20,nbMeri,nbPara);
+  //drawSphere(pts,nbMeri,nbPara);
+  Point*** pts = cylindre(p1,10,30,nbMeri);
+  drawCylindre(pts,nbMeri);
  
 
 

@@ -13,3 +13,5 @@ Point*** sphere(Point* centre, long rayon, int nbMeridien, int nbPara);
 void drawCylindre(Point*** pts, long nbPoints);
 
 Point*** cylindre(Point* pointO,long rayon, long hauteur, int nbMeridien);
+
+double getAngleDiedre(Point** triangle1, Point** triangle2);

@@ -148,3 +148,34 @@ void drawSphere(Point*** pts,int nbMeridien,int nbPara){
  	glEnd();
 
  }
+
+/*
+ * Calcul l'angle diedre entre triangle1 et triangle2
+ * on suppose que les triangles sont reprsenter par 3 points
+ * et que l'on lit les points dans le même sence
+ */
+ double getAngleDiedre(Point** triangle1, Point** triangle2){
+ 	Vector v1(triangle1[1]->getX()-triangle1[0]->getX(),
+ 			triangle1[1]->getY()-triangle1[0]->getY(),
+ 			triangle1[1]->getZ()-triangle1[0]->getZ());
+
+ 	Vector v2(triangle1[2]->getX()-triangle1[0]->getX(),
+ 			triangle1[2]->getY()-triangle1[0]->getY(),
+ 			triangle1[2]->getZ()-triangle1[0]->getZ());
+ 	Vector* vec1 = v1.vectoriel(v2);// vecteur normal du triangle1
+ 	vec1->normalize();
+
+ 	Vector v3(triangle2[1]->getX()-triangle2[0]->getX(),
+ 			triangle2[1]->getY()-triangle2[0]->getY(),
+ 			triangle2[1]->getZ()-triangle2[0]->getZ());
+
+ 	Vector v4(triangle2[2]->getX()-triangle2[0]->getX(),
+ 			triangle2[2]->getY()-triangle2[0]->getY(),
+ 			triangle2[2]->getZ()-triangle2[0]->getZ());
+
+ 	Vector* vec2 = v3.vectoriel(v4);
+ 	vec2->normalize(); // vecteur normal du triangle2
+
+ 	return cos(vec1->angle(*vec2));
+
+ }
