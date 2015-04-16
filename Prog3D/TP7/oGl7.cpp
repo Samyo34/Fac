@@ -143,7 +143,7 @@ void drawSphere(Point*** pts,int nbMeridien,int nbPara){
  	glEnd();
  	glBegin(GL_POLYGON);
  	for(int i=0;i<nbPoints;i++){
- 		glVertex3f(pts[1][i]->getX(), pts[1][i]->getY(), pts[1][i]->getZ());
+ 		glVertex3f(pts[1][nbPoints-i]->getX(), pts[1][nbPoints-i]->getY(), pts[1][nbPoints-i]->getZ());
  	}
  	glEnd();
 
@@ -176,6 +176,6 @@ void drawSphere(Point*** pts,int nbMeridien,int nbPara){
  	Vector* vec2 = v3.vectoriel(v4);
  	vec2->normalize(); // vecteur normal du triangle2
 
- 	return cos(vec1->angle(*vec2));
+ 	return vec1->angle(*vec2)*(180/PI);
 
  }

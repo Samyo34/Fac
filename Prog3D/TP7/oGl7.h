@@ -6,6 +6,8 @@
 #include "point.h"
 #include "vector.h"
 
+#define PI 3.14159265
+
 void drawSphere(Point*** pts,int nbMeridien,int nbPara);
 
 Point*** sphere(Point* centre, long rayon, int nbMeridien, int nbPara);
