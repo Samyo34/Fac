@@ -92,6 +92,7 @@ void readFile(char* fileName){
  * quelle triangle et voisin de quelle triangle
  */
 int** getVoisins(){
+	std::cout<<"taille : "<<nbTri<<std::endl;
 	int** indices = new int*[nbTri];
 	for(int i =0; i< nbTri; i++){
 		indices[i]=new int[3];
