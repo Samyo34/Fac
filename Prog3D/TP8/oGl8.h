@@ -10,7 +10,7 @@
 #include "../TP4/oGl3.h"
 #include "../TP4/figureGl.h"
 #include "triangle.h"
-
+#include <time.h>
 #include <fstream>
 #include <sstream>
 
@@ -22,3 +22,5 @@ void affiche();
 double* getVal(std::vector<std::string> ligne);
 
 int** getVoisins();
+
+void afficheSeg(int index, int color);

@@ -112,7 +112,7 @@ GLvoid window_reshape(GLsizei width, GLsizei height)
   // ici, vous verrez pendant le cours sur les projections qu'en modifiant les valeurs, il est
   // possible de changer la taille de l'objet dans la fenêtre. Augmentez ces valeurs si l'objet est
   // de trop grosse taille par rapport à la fenêtre.
-  glOrtho(-5.0, 5.0, -5.0, 5.0, zMin, Zmax);
+  glOrtho(-40.0, 40.0, -40.0, 40.0, -40, 40);
 
   // toutes les transformations suivantes s´appliquent au modèle de vue
   glMatrixMode(GL_MODELVIEW);
@@ -195,8 +195,8 @@ void render_scene()
   glVertex3f(0,0,0);
   glVertex3f(0,0,30);
   glEnd();
-  affiche();
-  
+  afficheSeg(0,0);
+ // affiche();
 
  
 

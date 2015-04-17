@@ -20,6 +20,15 @@ public:
 		return sommets;
 	}
 
+	Point** getPoints(){
+		Point** pts = new Point*[3];
+		pts[0]=new Point(sommets[0]->getX(),sommets[0]->getY(),sommets[0]->getZ());
+		pts[1]=new Point(sommets[1]->getX(),sommets[1]->getY(),sommets[1]->getZ());
+		pts[2]=new Point(sommets[2]->getX(),sommets[2]->getY(),sommets[2]->getZ());
+
+		return pts;
+	}
+
 	bool isVoisin(Triangle* tr){
 		Sommet** sommet1 = this->getSommets();
 		Sommet** sommet2 = tr->getSommets();
