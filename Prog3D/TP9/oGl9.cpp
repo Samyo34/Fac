@@ -95,8 +95,14 @@ void affiche(){
   		glVertex3f(tri[i]->getSommets()[2]->getX(),
   			tri[i]->getSommets()[2]->getY(),
   			tri[i]->getSommets()[2]->getZ());
+
+  		glVertex3f(tri[i]->getSommets()[0]->getX(),
+  			tri[i]->getSommets()[0]->getY(),
+  			tri[i]->getSommets()[0]->getZ());
+
   		glEnd();
 	}
+	
 
 }
 

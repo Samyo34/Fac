@@ -38,9 +38,10 @@ public:
 	}
 
 	bool equals(Sommet* s){
-		return (this->getX()-s->getX()>-0.5 || this->getX()-s->getX()<0.5 &&
-			this->getY()-s->getY()>-0.5 || this->getY()-s->getY()<0.5 &&
-			this->getZ()-s->getZ()>-0.5 || this->getZ()-s->getZ()<0.5);
+
+		return (((this->getX()-s->getX())>-0.5) && ((this->getX()-s->getX())<0.5) &&
+			((this->getY()-s->getY())>-0.5) && ((this->getY()-s->getY())<0.5) &&
+			((this->getZ()-s->getZ())>-0.5) && ((this->getZ()-s->getZ())<0.5));
 	}
 
 	double getDist(Sommet* s){

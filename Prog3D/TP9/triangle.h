@@ -32,7 +32,7 @@ public:
 	int contains(Sommet* s1){
 		int res = -1;
 		for(int i=0;i<3;i++){
-			if(this->getSommets()[0]->equals(s1)){
+			if(this->getSommets()[i]->equals(s1)){
 				return i;
 			}
 		}
