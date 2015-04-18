@@ -28,4 +28,10 @@ Triangle** raffinement(Triangle* triangle);
 
 void raffineAll();
 
+void butterflyFull(double niv);
+
+bool isMilieu(int pos);
+
+Sommet* butterfly(Triangle* t,int a1, int a2, int indiceTri, double niv);
+
 //vector<string> split(string ligne);
