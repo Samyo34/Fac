@@ -196,7 +196,8 @@ void render_scene()
   glVertex3f(0,0,0);
   glVertex3f(0,0,30);
   glEnd();
-  fusion(new Point(5,5,5),new Point(5,5,-5));
+
+  //fusion(new Point(5,5,5),new Point(5,5,-5));
   affiche();
 
  
@@ -219,6 +220,8 @@ int main(int argc, char **argv)
   glutCreateWindow("TP9");
   makeCube();
   readFile("cube.off");
+ // fusion(new Point(5,5,5),new Point(5,5,-5));
+  raffineAll();
 
  
   // initialisation de OpenGL et de la scène

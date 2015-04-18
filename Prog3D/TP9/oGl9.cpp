@@ -3,7 +3,7 @@
 using namespace std;
 
 Triangle** tri;
-int nbTri=0;
+int nbTri;
 
 
 /*
@@ -80,7 +80,6 @@ void affiche(){
   			tri[i]->getSommets()[2]->getZ());
   		glEnd();
 	}
-
 	glColor3f(1,0,0);
 	for(int i =0;i<nbTri;i++){
 		glBegin(GL_LINE_STRIP);
@@ -210,4 +209,54 @@ void fusion(Point* p1,Point* p2){
 			tri[i]->getSommets()[res2]=fu;
 		}
 	}
+}
+
+
+/*
+ * modifie tri pour obtenir un maillage plus fin
+ */
+void raffineAll(){
+	Triangle** triangles = new Triangle*[nbTri*4];
+	Triangle** temp = new Triangle*[4];
+	int cpt=0;
+	for(int i=0;i<nbTri;i++){
+		temp = raffinement(tri[i]);
+		for(int j=0;j<4;j++){
+			triangles[cpt]=temp[j];
+			cpt++;
+		}
+	}
+	tri = triangles;
+	nbTri = nbTri*4;
+}
+
+/*
+ * Raffine le triangle passé en parametre
+ * retourne 4 triangle correspondant au triangle raffiné
+ */
+Triangle** raffinement(Triangle* triangle){
+	Triangle** tr = new Triangle*[4];
+	double x,y,z;
+	x=(triangle->getSommets()[0]->getX()+triangle->getSommets()[1]->getX())/2;
+	y=(triangle->getSommets()[0]->getY()+triangle->getSommets()[1]->getY())/2;
+	z=(triangle->getSommets()[0]->getZ()+triangle->getSommets()[1]->getZ())/2;
+	Sommet* s1 = new Sommet(x,y,z);
+
+	x=(triangle->getSommets()[1]->getX()+triangle->getSommets()[2]->getX())/2;
+	y=(triangle->getSommets()[1]->getY()+triangle->getSommets()[2]->getY())/2;
+	z=(triangle->getSommets()[1]->getZ()+triangle->getSommets()[2]->getZ())/2;
+	Sommet* s2 = new Sommet(x,y,z);
+
+	x=(triangle->getSommets()[0]->getX()+triangle->getSommets()[2]->getX())/2;
+	y=(triangle->getSommets()[0]->getY()+triangle->getSommets()[2]->getY())/2;
+	z=(triangle->getSommets()[0]->getZ()+triangle->getSommets()[2]->getZ())/2;
+	Sommet* s3 = new Sommet(x,y,z);
+
+	tr[0]=new Triangle(triangle->getSommets()[0],s1,s3);
+	tr[1]=new Triangle(s1,triangle->getSommets()[1],s2);
+	tr[2]=new Triangle(s3,s2,triangle->getSommets()[2]);
+	tr[3]=new Triangle(s1,s2,s3);
+
+	return tr;
+
 }

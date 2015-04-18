@@ -24,4 +24,8 @@ int** getVoisins();
 
 void fusion(Point* p1,Point* p2);
 
+Triangle** raffinement(Triangle* triangle);
+
+void raffineAll();
+
 //vector<string> split(string ligne);
