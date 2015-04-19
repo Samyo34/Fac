@@ -16,6 +16,8 @@ public:
 		sommets[2]=s3;
 	}
 
+
+
 	Sommet** getSommets(){
 		return sommets;
 	}

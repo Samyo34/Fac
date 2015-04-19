@@ -223,10 +223,7 @@ int main(int argc, char **argv)
  // fusion(new Point(5,5,5),new Point(5,5,-5));
   //raffineAll();
 
-  std::cout<<"la"<<std::endl;
-  butterflyFull(1/16);
-
-  std::cout<<"la2"<<std::endl;
+  //butterflyFull(1/16);
 
  
   // initialisation de OpenGL et de la scène

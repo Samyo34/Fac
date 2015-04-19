@@ -271,11 +271,10 @@ void butterflyFull(double niv){
 	int cpt=0;
 	for(int i = 0;i<nbTri;i++){
 		if(isMilieu(i)){
-			cout<<i<<"pouet1"<<endl;
 			s1 = butterfly(tri[i],0,1,i,niv);
 			s2 = butterfly(tri[i],1,2,i,niv);
 			s3 = butterfly(tri[i],0,2,i,niv);
-			cout<<i<<"pouet2"<<endl;
+			//cout<<i<<endl;
 			triangles[cpt]= new Triangle(tri[i]->getSommets()[0],s1,s3);
 			cpt++;
 			triangles[cpt]= new Triangle(s1,tri[i]->getSommets()[1],s2);
@@ -288,7 +287,6 @@ void butterflyFull(double niv){
 			cpt++;
 		}
 	}
-	cout<<"pouet"<<endl;
 	Triangle** t = new Triangle*[cpt];
 	for(int i=0;i<cpt;i++){
 		t[i]=triangles[i];
@@ -327,12 +325,13 @@ Sommet* butterfly(Triangle* t,int a1, int a2, int indiceTri, double niv){
 	}else{
 		p3 = t->getSommets()[1];
 	}
-	
+	//cout<<"b1"<<endl;
 	Sommet* p4, *p5,*p6,*p7,*p8;
 	int res1,res2;
 	for(int i=0;i<3;i++){
 		if(indi[indiceTri][i]!=-1){
 			// p5
+		//	cout<<"dp5"<<endl;
 			res1 = tri[indi[indiceTri][i]]->contains(p1);
 			res2 = tri[indi[indiceTri][i]]->contains(p3);
 			if(res1 != -1 && res2 != -1){
@@ -344,6 +343,7 @@ Sommet* butterfly(Triangle* t,int a1, int a2, int indiceTri, double niv){
 					p5 = tri[indi[indiceTri][i]]->getSommets()[1];
 				}
 			}
+		//	cout<<"fp5 dp7"<<endl;
 			// p7
 			res1 = tri[indi[indiceTri][i]]->contains(p2);
 			res2 = tri[indi[indiceTri][i]]->contains(p3);
@@ -356,6 +356,7 @@ Sommet* butterfly(Triangle* t,int a1, int a2, int indiceTri, double niv){
 					p7 = tri[indi[indiceTri][i]]->getSommets()[1];
 				}
 			}
+		//	cout<<"fp7 dp4"<<endl;
 			//p4->p6,p8
 			res1 = tri[indi[indiceTri][i]]->contains(p1);
 			res2 = tri[indi[indiceTri][i]]->contains(p2);
@@ -367,45 +368,62 @@ Sommet* butterfly(Triangle* t,int a1, int a2, int indiceTri, double niv){
 				}else{
 					p4 = tri[indi[indiceTri][i]]->getSommets()[1];
 				}
+		//		cout<<"dp8"<<endl;
 				//p8
 				int pos = indi[indiceTri][i];
+				int cpt1 =0;int cpt2=0;
 				for(int j=0;j<3;j++){
-					res1 = tri[indi[pos][j]]->contains(p2);
-					res2 = tri[indi[pos][j]]->contains(p4);
-					if(res1 != -1 && res2 != -1){
-						if((res1 == 0 && res2 == 1) || (res1 == 1 && res2 == 0)){
-							p8 = tri[indi[indiceTri][i]]->getSommets()[2];
-						}else if((res1 == 1 && res2 == 2) || (res1 == 2 && res2 == 1)){
-							p8 = tri[indi[indiceTri][i]]->getSommets()[0];
-						}else{
-							p8 = tri[indi[indiceTri][i]]->getSommets()[1];
-						}
+					if(indi[pos][j]!=-1){
+						res1 = tri[indi[pos][j]]->contains(p2);
+						res2 = tri[indi[pos][j]]->contains(p4);
+						if(res1 != -1 && res2 != -1){
+							cpt1++;
+							if((res1 == 0 && res2 == 1) || (res1 == 1 && res2 == 0)){
+								p8 = tri[indi[indiceTri][i]]->getSommets()[2];
+							}else if((res1 == 1 && res2 == 2) || (res1 == 2 && res2 == 1)){
+								p8 = tri[indi[indiceTri][i]]->getSommets()[0];
+							}else{
+								p8 = tri[indi[indiceTri][i]]->getSommets()[1];
+							}
 
-					}
-					//p6
-					res1 = tri[indi[pos][j]]->contains(p1);
-					res2 = tri[indi[pos][j]]->contains(p4);
-					if(res1 != -1 && res2 != -1){
-						if((res1 == 0 && res2 == 1) || (res1 == 1 && res2 == 0)){
-							p6 = tri[indi[indiceTri][i]]->getSommets()[2];
-						}else if((res1 == 1 && res2 == 2) || (res1 == 2 && res2 == 1)){
-							p6 = tri[indi[indiceTri][i]]->getSommets()[0];
-						}else{
-							p6 = tri[indi[indiceTri][i]]->getSommets()[1];
 						}
+			//			cout<<"fp8 dp6"<<endl;
+						//p6
+						res1 = tri[indi[pos][j]]->contains(p1);
+						res2 = tri[indi[pos][j]]->contains(p4);
+						if(res1 != -1 && res2 != -1){
+							cpt2++;
+							if((res1 == 0 && res2 == 1) || (res1 == 1 && res2 == 0)){
+								p6 = tri[indi[indiceTri][i]]->getSommets()[2];
+							}else if((res1 == 1 && res2 == 2) || (res1 == 2 && res2 == 1)){
+								p6 = tri[indi[indiceTri][i]]->getSommets()[0];
+							}else{
+								p6 = tri[indi[indiceTri][i]]->getSommets()[1];
+							}
+						}
+			//			cout<<"fp6 "<<j<<" "<<indi[pos][j]<<endl;
 					}
+					
+				}
+				if(cpt1==0){
+					p8 = new Sommet(0,0,0);
+					p8->setNull(true);
+				}
+
+				if(cpt2==0){
+					p6 = new Sommet(0,0,0);
+					p6->setNull(true);
 				}
 			}
-
-				
-			}
-		}		
+		//	cout<<"fp4"<<endl;				
+		}
+	}	
+	//cout<<"dS "<<p8->getX()<<endl;	
 	// Construction des nouveaux sommets
 	double x,y,z;
 	x = (((p1->getX()+p2->getX())/2)+
 		(2*niv*(p3->getX()+p4->getX()))-
 		(niv*(p5->getX()+p6->getX()+p7->getX())));
-
 	y = (((p1->getY()+p2->getY())/2)+
 		(2*niv*(p3->getY()+p4->getY()))-
 		(niv*(p5->getY()+p6->getY()+p7->getY())));
@@ -413,6 +431,5 @@ Sommet* butterfly(Triangle* t,int a1, int a2, int indiceTri, double niv){
 	z = (((p1->getZ()+p2->getZ())/2)+
 		(2*niv*(p3->getZ()+p4->getZ()))-
 		(niv*(p5->getZ()+p6->getZ()+p7->getZ())));
-
 	return new Sommet(x,y,z);
 }

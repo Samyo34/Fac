@@ -6,17 +6,28 @@
 class Sommet{
 private:
 	double x,y,z;
+	bool null;
 public:
 	Sommet(Sommet* s){
 		this->x = s->getX();
 		this->y = s->getY();
 		this->z = s->getZ();
+		this->null =false;
 	}
 
 	Sommet(double x, double y,double z){
 		this->x = x;
 		this->y = y;
 		this->z = z;
+		this->null = false;
+	}
+
+	void setNull(bool val){
+		this->null = val;
+	}
+
+	bool isNull(){
+		return this->null;
 	}
 
 	Sommet(Point* p){
