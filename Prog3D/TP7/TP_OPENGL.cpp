@@ -184,7 +184,7 @@ void render_scene()
 {
   // Initialisation
   glColor3f(0,0,0);
- /* glBegin(GL_LINES);
+  glBegin(GL_LINES);
   glVertex3f(0,0,0);
   glVertex3f(30,0,0);
   glVertex3f(0,0,0);
@@ -192,14 +192,17 @@ void render_scene()
   glColor3f(0,0,1);
   glVertex3f(0,0,0);
   glVertex3f(0,0,30);
-  glEnd();*/
-
+  glEnd();
+ // areteVive(40);
   Point* p1=new Point(0,0,0);
   //Point*** pts = sphere(p1,20,nbMeri,nbPara);
   //drawSphere(pts,nbMeri,nbPara);
-  //Point*** pts = cylindre(p1,10,30,nbMeri);
-  //drawCylindre(pts,nbMeri);
- 
+  Point*** pts = cylindre(p1,10,30,nbMeri);
+  drawCylindre(pts,nbMeri);
+
+  Triangle* t1 =new Triangle(new Sommet(0,0,0),new Sommet(-5,0,0),new Sommet(-5,5,0));
+  Triangle* t2= new Triangle(new Sommet(0,0,0),new Sommet(-5,0,0),new Sommet(-5,0,5));
+  std::cout<<getAngleDiedre(t1,t2)<<std::endl; 
 
 
 
@@ -217,6 +220,8 @@ int main(int argc, char **argv)
   glutInitWindowSize(WIDTH, HEIGHT);
   glutInitWindowPosition(0, 0);
   glutCreateWindow("Premier exemple : carré");
+  //readFile("test.off");
+
  
   // initialisation de OpenGL et de la scène
   initGL();

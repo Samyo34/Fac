@@ -217,13 +217,13 @@ int main(int argc, char **argv)
   glutInitWindowSize(WIDTH, HEIGHT);
   glutInitWindowPosition(0, 0);
   glutCreateWindow("TP9");
-  //makeCube();
-  readFile("test.off");
+  makeCube();
+  readFile("cube.off");
   getVoisins();
- // fusion(new Point(5,5,5),new Point(5,5,-5));
-  //raffineAll();
+  //fusion(new Point(5,5,5),new Point(5,5,-5));
+  raffineAll();
 
-  //butterflyFull(1/16);
+ // butterflyFull(0.125f);
 
  
   // initialisation de OpenGL et de la scène

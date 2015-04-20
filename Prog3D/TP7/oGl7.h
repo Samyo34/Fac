@@ -3,8 +3,13 @@
 #include <stdlib.h>
 #include <math.h>
 #include <iostream>
+#include <string.h>
+#include <vector>
 #include "point.h"
 #include "vector.h"
+#include "triangle.h"
+#include <fstream>
+#include <sstream>
 
 #define PI 3.14159265
 
@@ -16,4 +21,12 @@ void drawCylindre(Point*** pts, long nbPoints);
 
 Point*** cylindre(Point* pointO,long rayon, long hauteur, int nbMeridien);
 
-double getAngleDiedre(Point** triangle1, Point** triangle2);
+double getAngleDiedre(Triangle* triangle1, Triangle* triangle2);
+
+void readFile(char* fileName);
+
+//std::vector<string> split(std::string ligne);
+
+//double* getVal(std::vector<string> ligne);
+
+void areteVive(double seuil);
